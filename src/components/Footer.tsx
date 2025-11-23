@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, Twitter, Linkedin, Github, Mail } from 'lucide-react';
 import { DemoModal } from './DemoModal';
+import volinaLogo from 'figma:asset/49959c7d4e27a10999ba3ed912e7a8ffb01555d2.png';
 
 export function Footer() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
@@ -42,11 +43,9 @@ export function Footer() {
         <div className="py-12 sm:py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
           {/* Brand Column */}
           <div className="col-span-2">
-            <div className="flex items-center gap-2 mb-3 sm:mb-4">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#3366FF] to-[#8C51FF] flex items-center justify-center">
-                <Phone className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
-              </div>
-              <span className="text-lg sm:text-xl">VoiceFlow AI</span>
+            <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+              <img src={volinaLogo} alt="Volina AI Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
+              <span className="text-lg sm:text-xl">Volina AI</span>
             </div>
             <p className="text-sm sm:text-base text-gray-400 dark:text-gray-500 mb-4 sm:mb-6 max-w-xs">
               Automate your calls with human-like AI voice agents. Never miss a lead again.
@@ -87,7 +86,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="py-6 sm:py-8 border-t border-gray-700 dark:border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500">
-            © 2025 VoiceFlow AI. All rights reserved.
+            © 2025 Volina AI. All rights reserved.
           </p>
           <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400 dark:text-gray-500">
             <a href="#" className="hover:text-white dark:hover:text-gray-300 transition-colors">Privacy</a>

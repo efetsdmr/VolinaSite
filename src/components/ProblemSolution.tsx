@@ -22,24 +22,24 @@ export function ProblemSolution() {
 
   const solutions = [
     {
-      icon: CheckCircle,
-      title: 'AI answers instantly',
-      color: '#3366FF'
+      icon: Zap,
+      title: '24/7 Instant Response',
+      description: 'Never miss a lead - AI answers every call within 3 seconds'
     },
     {
-      icon: Zap,
-      title: 'Scales infinitely',
-      color: '#8C51FF'
+      icon: CheckCircle,
+      title: 'Intelligent Qualification',
+      description: 'AI filters and qualifies leads based on your criteria'
     },
     {
       icon: Clock,
-      title: 'Works 24/7',
-      color: '#3366FF'
+      title: 'Automated Follow-ups',
+      description: 'Smart reminders and callbacks ensure no opportunity is lost'
     }
   ];
 
   return (
-    <section id="solutions" className="py-12 sm:py-16 lg:py-32 bg-white dark:bg-gray-900">
+    <section id="solutions" className="py-16 sm:py-20 lg:py-32 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
           {/* Problems */}

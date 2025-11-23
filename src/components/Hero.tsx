@@ -3,10 +3,13 @@ import { Button } from './ui/button';
 import { Phone, TrendingUp, Target, Menu, Moon, Sun } from 'lucide-react';
 import { useDarkMode } from './DarkModeContext';
 import { DemoModal } from './DemoModal';
+import { TryVolinaModal } from './TryVolinaModal';
+import volinaLogo from 'figma:asset/49959c7d4e27a10999ba3ed912e7a8ffb01555d2.png';
 
 export function Hero() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [isTryVolinaModalOpen, setIsTryVolinaModalOpen] = useState(false);
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-950/30 dark:to-purple-950/30 transition-colors duration-300">
@@ -19,11 +22,9 @@ export function Hero() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Navigation */}
         <nav className="flex items-center justify-between py-4 sm:py-6">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-[#3366FF] to-[#8C51FF] flex items-center justify-center">
-              <Phone className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
-            </div>
-            <span className="text-lg sm:text-xl text-[#333333] dark:text-white">VoiceFlow AI</span>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <img src={volinaLogo} alt="Volina AI Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
+            <span className="text-lg sm:text-xl text-[#333333] dark:text-white">Volina AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="#solutions" className="text-[#333333] dark:text-gray-300 hover:text-[#3366FF] dark:hover:text-[#3366FF] transition-colors">Solutions</a>
@@ -79,8 +80,13 @@ export function Hero() {
               >
                 Book a Demo Call
               </Button>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-[#333333] dark:border-gray-600 text-[#333333] dark:text-gray-300 px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg hover:bg-[#333333] hover:text-white dark:hover:bg-gray-700">
-                See Dashboard
+              <Button 
+                size="lg" 
+                variant="outline" 
+                onClick={() => setIsTryVolinaModalOpen(true)}
+                className="w-full sm:w-auto border-2 border-[#333333] dark:border-gray-600 text-[#333333] dark:text-gray-300 px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg hover:bg-[#333333] hover:text-white dark:hover:bg-gray-700"
+              >
+                Try Volina
               </Button>
             </div>
 
@@ -116,6 +122,8 @@ export function Hero() {
 
       {/* Demo Modal */}
       <DemoModal isOpen={isDemoModalOpen} onClose={() => setIsDemoModalOpen(false)} />
+      {/* Try Volina Modal */}
+      <TryVolinaModal isOpen={isTryVolinaModalOpen} onClose={() => setIsTryVolinaModalOpen(false)} />
     </section>
   );
 }

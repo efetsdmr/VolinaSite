@@ -73,63 +73,6 @@ export function Features() {
             </div>
           ))}
         </div>
-
-        {/* Feature Highlight */}
-        <div className="mt-10 sm:mt-16 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 border border-[#3366FF]/20 dark:border-[#3366FF]/40">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-            <div>
-              <h3 className="text-2xl sm:text-3xl lg:text-4xl text-[#333333] dark:text-white mb-4 sm:mb-6">
-                Built for Enterprise, Priced for Scale
-              </h3>
-              <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-6 sm:mb-8">
-                Whether you're making 100 calls or 100,000 calls per month, our infrastructure scales effortlessly. Enterprise-grade security, 99.9% uptime SLA, and dedicated support.
-              </p>
-              <ul className="space-y-3 sm:space-y-4">
-                <li className="flex items-start gap-3">
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#3366FF] flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-1">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">SOC 2 Type II Certified</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#3366FF] flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-1">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">GDPR & CCPA Compliant</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-[#3366FF] flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-1">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">24/7 Priority Support</span>
-                </li>
-              </ul>
-            </div>
-            <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-6 sm:p-8 shadow-xl border border-gray-100 dark:border-gray-700">
-              <div className="text-center">
-                <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🚀</div>
-                <div className="text-4xl sm:text-5xl text-[#333333] dark:text-white mb-1 sm:mb-2">10M+</div>
-                <div className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-4 sm:mb-6">Calls processed monthly</div>
-                <div className="grid grid-cols-2 gap-3 sm:gap-4 text-center">
-                  <div>
-                    <div className="text-2xl sm:text-3xl text-[#3366FF]">98.7%</div>
-                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Success Rate</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl sm:text-3xl text-[#8C51FF]">4.9/5</div>
-                    <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Customer Rating</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

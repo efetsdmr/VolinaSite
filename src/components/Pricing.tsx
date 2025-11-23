@@ -21,20 +21,19 @@ export function Pricing() {
       popular: false
     },
     {
-      name: 'Growth',
-      price: '$899',
+      name: 'Professional',
+      price: '$799',
       period: '/month',
       description: 'For growing businesses scaling outreach',
       features: [
         'Up to 5,000 calls/month',
-        '10 voice profiles',
-        'Advanced analytics & transcripts',
-        'Priority support',
+        '10 custom voice profiles',
+        'Advanced analytics & AI insights',
+        'Priority phone & chat support',
         'Unlimited campaigns',
         'Premium voice quality',
         'Multi-language support (10 languages)',
-        'API access',
-        'Custom integrations'
+        'CRM integrations (Salesforce, HubSpot)'
       ],
       cta: 'Start Free Trial',
       popular: true
@@ -43,18 +42,16 @@ export function Pricing() {
       name: 'Enterprise',
       price: 'Custom',
       period: '',
-      description: 'For organizations with complex needs',
+      description: 'For large teams with complex needs',
       features: [
         'Unlimited calls',
         'Unlimited voice profiles',
-        'White-label dashboard',
-        'Dedicated account manager',
-        'Custom workflows & logic',
-        'Enterprise SLA (99.9% uptime)',
-        'All languages supported',
-        'Advanced security & compliance',
         'Custom AI training',
-        'On-premise deployment option'
+        'Dedicated account manager',
+        'White-label options',
+        'Advanced security & compliance',
+        'Custom integrations',
+        'SLA guarantee'
       ],
       cta: 'Contact Sales',
       popular: false
@@ -62,7 +59,7 @@ export function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="py-12 sm:py-16 lg:py-32 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+    <section id="pricing" className="py-16 sm:py-20 lg:py-32 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         <div className="text-center mb-10 sm:mb-16">
           <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 mb-4 sm:mb-6">

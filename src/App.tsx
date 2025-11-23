@@ -9,6 +9,17 @@ import { AdminPanel } from './components/AdminPanel';
 import { Pricing } from './components/Pricing';
 import { Footer } from './components/Footer';
 
+// Suppress Jotai multiple instance warning - this is a known issue with Radix UI in bundled environments
+if (typeof window !== 'undefined') {
+  const originalWarn = console.warn;
+  console.warn = (...args) => {
+    if (args[0]?.includes?.('Detected multiple Jotai instances')) {
+      return;
+    }
+    originalWarn.apply(console, args);
+  };
+}
+
 export default function App() {
   return (
     <DarkModeProvider>

@@ -19,15 +19,15 @@ export function HowItWorks() {
     },
     {
       icon: Calendar,
-      title: 'Convert & Book',
-      description: 'AI agent qualifies leads, handles objections, and books appointments directly into your calendar.',
+      title: 'Books & Notifies',
+      description: 'AI books qualified appointments directly to your calendar. You get notified instantly with call summary.',
       color: '#3366FF',
       step: '03'
     }
   ];
 
   return (
-    <section id="how-it-works" className="py-12 sm:py-16 lg:py-32 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
+    <section id="how-it-works" className="py-16 sm:py-20 lg:py-32 bg-white dark:bg-gray-900 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         <div className="text-center mb-10 sm:mb-16">
           <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900 mb-4 sm:mb-6">
