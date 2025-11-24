@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Phone, Mic, MicOff, Volume2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { vapiConfig } from '../config/vapi.config';
+import volinaLogo from 'figma:asset/49959c7d4e27a10999ba3ed912e7a8ffb01555d2.png';
 
 interface TryVolinaModalProps {
   isOpen: boolean;
@@ -310,25 +311,21 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
               >
                 Start Voice Call
               </motion.button>
-
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-                Powered by Vapi AI • Real voice conversation
-              </p>
             </div>
           )}
 
           {/* PERMISSION REQUEST SCREEN */}
           {callState === 'permission' && (
-            <div className="p-8 sm:p-12 text-center">
+            <div className="p-8 sm:p-10 text-center">
               {/* Microphone Icon */}
               <motion.div
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ type: "spring", duration: 0.8 }}
-                className="mb-8"
+                className="mb-6"
               >
-                <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-[#3366FF] to-[#8C51FF] mb-6 shadow-2xl shadow-blue-500/40">
-                  <Mic className="w-16 h-16 text-white" />
+                <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-[#3366FF] to-[#8C51FF] mb-4 shadow-2xl shadow-blue-500/40">
+                  <Mic className="w-12 h-12 text-white" />
                 </div>
               </motion.div>
 
@@ -337,7 +334,7 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-3xl sm:text-4xl text-[#333333] dark:text-white mb-4"
+                className="text-2xl sm:text-3xl text-[#333333] dark:text-white mb-3"
               >
                 Microphone Access Required
               </motion.h2>
@@ -347,64 +344,25 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="space-y-4 mb-8"
+                className="space-y-4 mb-6"
               >
-                <p className="text-lg text-gray-600 dark:text-gray-300">
-                  To talk with our AI voice agent, we need access to your microphone.
+                <p className="text-gray-600 dark:text-gray-300">
+                  Click "Allow" when your browser asks for microphone permission to start the voice call.
                 </p>
 
                 {error && (
-                  <div className="bg-yellow-50 dark:bg-yellow-950/30 rounded-2xl p-4 border-2 border-yellow-200 dark:border-yellow-800">
-                    <p className="text-sm text-yellow-700 dark:text-yellow-400 mb-2">
-                      ⚠️ <strong>Figma Environment Limitation</strong>
+                  <div className="bg-yellow-50 dark:bg-yellow-950/30 rounded-xl p-3 border border-yellow-200 dark:border-yellow-800">
+                    <p className="text-xs text-yellow-700 dark:text-yellow-400 mb-1">
+                      ⚠️ <strong>Limited in Figma Preview</strong>
                     </p>
                     <p className="text-xs text-yellow-600 dark:text-yellow-500">
-                      Microphone access may be restricted in Figma's iframe preview. For full voice functionality, please:
+                      For full voice functionality, open in a new tab or deploy to a real website.
                     </p>
-                    <ul className="text-xs text-yellow-600 dark:text-yellow-500 mt-2 space-y-1 list-disc list-inside">
-                      <li>Open this in a new browser tab (not in Figma)</li>
-                      <li>Or deploy to a real website</li>
-                      <li>Or check your browser's microphone settings</li>
-                    </ul>
                   </div>
                 )}
-                
-                {/* Permission Steps */}
-                <div className="bg-blue-50 dark:bg-blue-950/30 rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-800">
-                  <div className="flex items-start gap-3 text-left">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#3366FF] text-white flex items-center justify-center text-sm mt-1">
-                      1
-                    </div>
-                    <div>
-                      <p className="text-gray-700 dark:text-gray-300 mb-1">
-                        Click <strong>"Allow Microphone"</strong> button below
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 text-left mt-4">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#3366FF] text-white flex items-center justify-center text-sm mt-1">
-                      2
-                    </div>
-                    <div>
-                      <p className="text-gray-700 dark:text-gray-300 mb-1">
-                        Your browser will ask for permission
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3 text-left mt-4">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#3366FF] text-white flex items-center justify-center text-sm mt-1">
-                      3
-                    </div>
-                    <div>
-                      <p className="text-gray-700 dark:text-gray-300 mb-1">
-                        Click <strong>"Allow"</strong> in the browser popup
-                      </p>
-                    </div>
-                  </div>
-                </div>
 
-                <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-center justify-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                   <span>Your voice is private and secure</span>
@@ -417,9 +375,9 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
                 onClick={startCall}
-                className="w-full bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90 text-white py-5 rounded-2xl text-lg transition-opacity shadow-lg shadow-blue-500/30 mb-3"
+                className="w-full bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90 text-white py-4 rounded-2xl text-lg transition-opacity shadow-lg shadow-blue-500/30 mb-3"
               >
-                🎤 Allow Microphone & Start Call
+                Allow Microphone & Start Call
               </motion.button>
 
               {/* Cancel Button */}
@@ -428,7 +386,7 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.5 }}
                 onClick={() => setCallState('idle')}
-                className="w-full text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 py-3 rounded-xl transition-colors"
+                className="w-full text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 py-2 rounded-xl transition-colors"
               >
                 Cancel
               </motion.button>
@@ -458,8 +416,8 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                     )}
                     
                     {/* Main Avatar */}
-                    <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[#3366FF] to-[#8C51FF] flex items-center justify-center shadow-2xl">
-                      <Phone className="w-16 h-16 text-white" />
+                    <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[#3366FF] to-[#8C51FF] flex items-center justify-center shadow-2xl p-6">
+                      <img src={volinaLogo} alt="Volina AI" className="w-full h-full object-contain" />
                     </div>
                   </div>
                 </div>
@@ -641,10 +599,10 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
           )}
 
           {/* Bottom Info */}
-          {callState !== 'ended' && (
+          {callState !== 'ended' && callState !== 'permission' && (
             <div className="px-8 pb-6 text-center">
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                🔒 Secure voice connection • Real AI conversation
+                🔒 Secure voice connection
               </p>
             </div>
           )}
