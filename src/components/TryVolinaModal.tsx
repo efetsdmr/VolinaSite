@@ -415,8 +415,8 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                       </>
                     )}
                     
-                    {/* Main Avatar */}
-                    <div className="relative w-32 h-32 rounded-full bg-gradient-to-br from-[#3366FF] to-[#8C51FF] flex items-center justify-center shadow-2xl p-6">
+                    {/* Main Avatar - No background circle */}
+                    <div className="relative w-32 h-32 flex items-center justify-center">
                       <img src={volinaLogo} alt="Volina AI" className="w-full h-full object-contain" />
                     </div>
                   </div>
