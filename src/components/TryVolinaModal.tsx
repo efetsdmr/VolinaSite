@@ -1,35 +1,151 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { X, Phone, Mic, MicOff, Volume2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { vapiConfig } from '../config/vapi.config';
 
 interface TryVolinaModalProps {
   isOpen: boolean;
   onClose: () => void;
+  workflowId?: string;
+  assistantName?: string;
 }
 
-export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
-  const [callState, setCallState] = useState<'idle' | 'connecting' | 'active' | 'ended'>('idle');
+export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'Volina AI Assistant' }: TryVolinaModalProps) {
+  const [callState, setCallState] = useState<'idle' | 'permission' | 'connecting' | 'active' | 'ended'>('idle');
   const [isMuted, setIsMuted] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
-  const [transcript, setTranscript] = useState<{ speaker: string; text: string }[]>([]);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [transcript, setTranscript] = useState<{ speaker: string; text: string; timestamp: number }[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(false);
+  
+  const vapiRef = useRef<any>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Initialize Vapi dynamically
+  useEffect(() => {
+    const initVapi = async () => {
+      try {
+        const publicKey = vapiConfig.publicKey;
+        if (!publicKey) {
+          console.warn('Vapi public key not found');
+          return;
+        }
+
+        // Dynamic import to avoid SSR issues
+        const { default: Vapi } = await import('@vapi-ai/web');
+        
+        if (!vapiRef.current) {
+          vapiRef.current = new Vapi(publicKey);
+          
+          // Set up event listeners
+          vapiRef.current.on('call-start', () => {
+            console.log('Call started');
+            setCallState('active');
+            setStatusMessage('Connected');
+            setError(null);
+          });
+
+          vapiRef.current.on('call-end', () => {
+            console.log('Call ended');
+            setCallState('ended');
+            setStatusMessage('Call ended');
+            if (timerRef.current) {
+              clearInterval(timerRef.current);
+            }
+          });
+
+          vapiRef.current.on('speech-start', () => {
+            console.log('AI started speaking');
+            setStatusMessage('AI speaking...');
+            setIsSpeaking(true);
+          });
+
+          vapiRef.current.on('speech-end', () => {
+            console.log('AI finished speaking');
+            setStatusMessage('Listening...');
+            setIsSpeaking(false);
+          });
+
+          vapiRef.current.on('message', (message: any) => {
+            console.log('Message received:', message);
+            
+            // Handle transcript messages
+            if (message.type === 'transcript' && message.transcriptType === 'final') {
+              const speaker = message.role === 'assistant' ? 'AI' : 'You';
+              setTranscript(prev => [...prev, {
+                speaker,
+                text: message.transcript,
+                timestamp: Date.now()
+              }]);
+            }
+          });
+
+          vapiRef.current.on('error', (error: any) => {
+            console.error('Vapi error:', error);
+            setError(error?.message || 'An error occurred');
+            setCallState('idle');
+            if (timerRef.current) {
+              clearInterval(timerRef.current);
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Failed to initialize Vapi:', err);
+        setError('Failed to load voice service. Please check your internet connection.');
+      }
+    };
+
+    initVapi();
+
+    return () => {
+      // Cleanup on unmount
+      if (vapiRef.current) {
+        try {
+          vapiRef.current.stop();
+        } catch (err) {
+          console.error('Error stopping call:', err);
+        }
+      }
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!isOpen) {
+      // Reset state when modal closes
       setCallState('idle');
       setIsMuted(false);
       setCallDuration(0);
+      setStatusMessage('');
       setTranscript([]);
+      setError(null);
+      
+      if (vapiRef.current) {
+        try {
+          vapiRef.current.stop();
+        } catch (err) {
+          console.error('Error stopping call:', err);
+        }
+      }
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
     }
   }, [isOpen]);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (callState === 'active') {
-      timer = setInterval(() => {
+    if (callState === 'active' && !timerRef.current) {
+      timerRef.current = setInterval(() => {
         setCallDuration((prev) => prev + 1);
       }, 1000);
+    } else if (callState !== 'active' && timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
     }
-    return () => clearInterval(timer);
   }, [callState]);
 
   const formatDuration = (seconds: number) => {
@@ -38,33 +154,79 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const startCall = () => {
+  const startCall = async () => {
+    if (!vapiRef.current && !isDemoMode) {
+      setError('Voice service not initialized. Please refresh the page.');
+      setCallState('idle');
+      return;
+    }
+
     setCallState('connecting');
-    setTimeout(() => {
-      setCallState('active');
-      setTranscript([
-        { speaker: 'AI', text: 'Hello! I\'m Volina, your AI assistant. How can I help you today?' }
-      ]);
+    setStatusMessage('Requesting microphone access...');
+    setError(null);
+
+    try {
+      // First, request microphone permission explicitly
+      console.log('Requesting microphone permission...');
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       
-      setTimeout(() => {
-        setTranscript(prev => [...prev, 
-          { speaker: 'You', text: 'I\'d like to learn more about your AI voice agents.' }
-        ]);
-        
-        setTimeout(() => {
-          setTranscript(prev => [...prev, 
-            { speaker: 'AI', text: 'Great! Our AI voice agents can handle customer calls 24/7, qualify leads, and schedule appointments automatically. Would you like to see a demo of specific features?' }
-          ]);
-        }, 2000);
-      }, 3000);
-    }, 1500);
+      // Stop the stream immediately - we just needed permission
+      stream.getTracks().forEach(track => track.stop());
+      
+      console.log('Microphone permission granted!');
+      setStatusMessage('Connecting to AI...');
+
+      if (workflowId) {
+        // Start with workflow - pass directly as string
+        await vapiRef.current.start(workflowId);
+      } else {
+        // Start with assistant ID - pass directly as string
+        const assistantId = vapiConfig.assistantId;
+        if (!assistantId) {
+          throw new Error('Assistant ID not configured');
+        }
+        console.log('Starting call with assistant ID:', assistantId);
+        await vapiRef.current.start(assistantId);
+      }
+    } catch (err: any) {
+      console.error('Failed to start call:', err);
+      
+      // Check if it's a permission error
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setError('Microphone access denied. Please allow microphone access in your browser settings and try again.');
+      } else if (err.name === 'NotFoundError') {
+        setError('No microphone found. Please connect a microphone and try again.');
+      } else {
+        setError(err?.message || 'Failed to start call. Please try again.');
+      }
+      
+      setCallState('permission');
+    }
   };
 
   const endCall = () => {
+    if (vapiRef.current) {
+      try {
+        vapiRef.current.stop();
+      } catch (err) {
+        console.error('Error ending call:', err);
+      }
+    }
     setCallState('ended');
     setTimeout(() => {
       onClose();
     }, 2000);
+  };
+
+  const toggleMute = () => {
+    if (vapiRef.current) {
+      try {
+        vapiRef.current.setMuted(!isMuted);
+        setIsMuted(!isMuted);
+      } catch (err) {
+        console.error('Error toggling mute:', err);
+      }
+    }
   };
 
   if (!isOpen) return null;
@@ -86,6 +248,13 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
             <X className="w-5 h-5 text-gray-500 dark:text-gray-400" />
           </button>
 
+          {/* Error Message */}
+          {error && (
+            <div className="absolute top-16 left-4 right-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3 z-10">
+              <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+            </div>
+          )}
+
           {callState === 'idle' && (
             <div className="p-8 sm:p-12 text-center">
               {/* Header */}
@@ -99,7 +268,7 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
                   <Phone className="w-12 h-12 text-white" />
                 </div>
                 <h2 className="text-3xl sm:text-4xl text-[#333333] dark:text-white mb-3">
-                  Try Volina AI Assistant
+                  {assistantName}
                 </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-300">
                   Experience our AI voice agent in action
@@ -135,15 +304,134 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                onClick={startCall}
-                className="w-full bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90 text-white py-5 rounded-2xl text-lg transition-opacity shadow-lg shadow-blue-500/30"
+                onClick={() => setCallState('permission')}
+                disabled={!!error}
+                className="w-full bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90 text-white py-5 rounded-2xl text-lg transition-opacity shadow-lg shadow-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Start Demo Call
+                Start Voice Call
               </motion.button>
 
               <p className="text-sm text-gray-500 dark:text-gray-400 mt-4">
-                This is a simulated demo for demonstration purposes
+                Powered by Vapi AI • Real voice conversation
               </p>
+            </div>
+          )}
+
+          {/* PERMISSION REQUEST SCREEN */}
+          {callState === 'permission' && (
+            <div className="p-8 sm:p-12 text-center">
+              {/* Microphone Icon */}
+              <motion.div
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ type: "spring", duration: 0.8 }}
+                className="mb-8"
+              >
+                <div className="inline-flex items-center justify-center w-32 h-32 rounded-full bg-gradient-to-br from-[#3366FF] to-[#8C51FF] mb-6 shadow-2xl shadow-blue-500/40">
+                  <Mic className="w-16 h-16 text-white" />
+                </div>
+              </motion.div>
+
+              {/* Title */}
+              <motion.h2
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-3xl sm:text-4xl text-[#333333] dark:text-white mb-4"
+              >
+                Microphone Access Required
+              </motion.h2>
+
+              {/* Description */}
+              <motion.div
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="space-y-4 mb-8"
+              >
+                <p className="text-lg text-gray-600 dark:text-gray-300">
+                  To talk with our AI voice agent, we need access to your microphone.
+                </p>
+
+                {error && (
+                  <div className="bg-yellow-50 dark:bg-yellow-950/30 rounded-2xl p-4 border-2 border-yellow-200 dark:border-yellow-800">
+                    <p className="text-sm text-yellow-700 dark:text-yellow-400 mb-2">
+                      ⚠️ <strong>Figma Environment Limitation</strong>
+                    </p>
+                    <p className="text-xs text-yellow-600 dark:text-yellow-500">
+                      Microphone access may be restricted in Figma's iframe preview. For full voice functionality, please:
+                    </p>
+                    <ul className="text-xs text-yellow-600 dark:text-yellow-500 mt-2 space-y-1 list-disc list-inside">
+                      <li>Open this in a new browser tab (not in Figma)</li>
+                      <li>Or deploy to a real website</li>
+                      <li>Or check your browser's microphone settings</li>
+                    </ul>
+                  </div>
+                )}
+                
+                {/* Permission Steps */}
+                <div className="bg-blue-50 dark:bg-blue-950/30 rounded-2xl p-6 border-2 border-blue-200 dark:border-blue-800">
+                  <div className="flex items-start gap-3 text-left">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#3366FF] text-white flex items-center justify-center text-sm mt-1">
+                      1
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 mb-1">
+                        Click <strong>"Allow Microphone"</strong> button below
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 text-left mt-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#3366FF] text-white flex items-center justify-center text-sm mt-1">
+                      2
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 mb-1">
+                        Your browser will ask for permission
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 text-left mt-4">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#3366FF] text-white flex items-center justify-center text-sm mt-1">
+                      3
+                    </div>
+                    <div>
+                      <p className="text-gray-700 dark:text-gray-300 mb-1">
+                        Click <strong>"Allow"</strong> in the browser popup
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                  <span>Your voice is private and secure</span>
+                </div>
+              </motion.div>
+
+              {/* Allow Button */}
+              <motion.button
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                onClick={startCall}
+                className="w-full bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90 text-white py-5 rounded-2xl text-lg transition-opacity shadow-lg shadow-blue-500/30 mb-3"
+              >
+                🎤 Allow Microphone & Start Call
+              </motion.button>
+
+              {/* Cancel Button */}
+              <motion.button
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                onClick={() => setCallState('idle')}
+                className="w-full text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 py-3 rounded-xl transition-colors"
+              >
+                Cancel
+              </motion.button>
             </div>
           )}
 
@@ -180,7 +468,7 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
               {/* Call Info */}
               <div className="text-center mb-8">
                 <h3 className="text-2xl sm:text-3xl text-[#333333] dark:text-white mb-2">
-                  Volina AI Assistant
+                  {assistantName}
                 </h3>
                 <div className="flex items-center justify-center gap-2 mb-1">
                   {callState === 'connecting' && (
@@ -201,11 +489,57 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
                   )}
                 </div>
                 {callState === 'active' && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {formatDuration(callDuration)}
-                  </p>
+                  <>
+                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                      {formatDuration(callDuration)}
+                    </p>
+                    {statusMessage && (
+                      <p className="text-xs text-[#3366FF]">
+                        {statusMessage}
+                      </p>
+                    )}
+                  </>
                 )}
               </div>
+
+              {/* Microphone Instructions - ACTIVE CALL */}
+              {callState === 'active' && (
+                <div className="mb-6">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/30 dark:to-purple-950/30 rounded-2xl p-4 border-2 border-dashed border-blue-200 dark:border-blue-800"
+                  >
+                    <div className="flex items-center justify-center gap-3 mb-2">
+                      {!isMuted ? (
+                        <>
+                          <motion.div
+                            animate={{ scale: [1, 1.2, 1] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                          >
+                            <Mic className="w-6 h-6 text-[#3366FF]" />
+                          </motion.div>
+                          <p className="text-[#3366FF]">
+                            🎤 Microphone Active - Speak Now!
+                          </p>
+                        </>
+                      ) : (
+                        <>
+                          <MicOff className="w-6 h-6 text-red-500" />
+                          <p className="text-red-600 dark:text-red-400">
+                            Microphone Muted
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <p className="text-xs text-center text-gray-600 dark:text-gray-400">
+                      {!isMuted 
+                        ? "Start talking - the AI will respond to your voice" 
+                        : "Click the microphone button below to unmute"}
+                    </p>
+                  </motion.div>
+                </div>
+              )}
 
               {/* Live Transcript */}
               {callState === 'active' && transcript.length > 0 && (
@@ -218,7 +552,7 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
                     <AnimatePresence>
                       {transcript.map((item, index) => (
                         <motion.div
-                          key={index}
+                          key={item.timestamp}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           className={`${
@@ -227,7 +561,7 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
                               : 'text-right'
                           }`}
                         >
-                          <div className={`inline-block px-4 py-2 rounded-2xl ${
+                          <div className={`inline-block px-4 py-2 rounded-2xl max-w-[85%] ${
                             item.speaker === 'AI'
                               ? 'bg-blue-50 dark:bg-blue-950/30 text-gray-700 dark:text-gray-300'
                               : 'bg-purple-50 dark:bg-purple-950/30 text-gray-700 dark:text-gray-300'
@@ -248,15 +582,15 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
                   {/* Mute Button */}
                   <motion.button
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => setIsMuted(!isMuted)}
+                    onClick={toggleMute}
                     className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors ${
                       isMuted
-                        ? 'bg-gray-300 dark:bg-gray-700'
+                        ? 'bg-red-100 dark:bg-red-900/30 border-2 border-red-300 dark:border-red-700'
                         : 'bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700'
                     }`}
                   >
                     {isMuted ? (
-                      <MicOff className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                      <MicOff className="w-6 h-6 text-red-600 dark:text-red-400" />
                     ) : (
                       <Mic className="w-6 h-6 text-gray-600 dark:text-gray-300" />
                     )}
@@ -270,6 +604,20 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
                   >
                     <Phone className="w-8 h-8 text-white rotate-[135deg]" />
                   </motion.button>
+                </div>
+              )}
+
+              {/* Connecting State */}
+              {callState === 'connecting' && (
+                <div className="text-center">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-4 h-4 border-2 border-[#3366FF] border-t-transparent rounded-full"
+                    />
+                    <span className="text-sm text-[#3366FF]">Initializing voice connection...</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -296,7 +644,7 @@ export function TryVolinaModal({ isOpen, onClose }: TryVolinaModalProps) {
           {callState !== 'ended' && (
             <div className="px-8 pb-6 text-center">
               <p className="text-xs text-gray-500 dark:text-gray-400">
-                Experience human-like AI conversations powered by Volina
+                🔒 Secure voice connection • Real AI conversation
               </p>
             </div>
           )}
