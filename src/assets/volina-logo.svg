@@ -9,10 +9,10 @@
   <!-- Left arm of V -->
   <path d="M 42 20 C 52 20, 58 28, 62 38 L 82 105 C 86 118, 88 128, 100 130 C 112 128, 114 118, 118 105 L 138 38 C 142 28, 148 20, 158 20 C 168 20, 175 27, 170 40 L 130 140 C 125 155, 115 175, 100 180 C 85 175, 75 155, 70 140 L 30 40 C 25 27, 32 20, 42 20 Z" fill="url(#volinaGradient)"/>
   
-  <!-- Soundwave bars in center -->
-  <rect x="85" y="60" width="8" height="25" rx="4" fill="url(#volinaGradient)" opacity="0.9"/>
-  <rect x="95" y="50" width="8" height="40" rx="4" fill="url(#volinaGradient)"/>
-  <rect x="105" y="45" width="8" height="50" rx="4" fill="url(#volinaGradient)" opacity="0.95"/>
-  <rect x="115" y="52" width="8" height="38" rx="4" fill="url(#volinaGradient)"/>
-  <rect x="125" y="62" width="8" height="23" rx="4" fill="url(#volinaGradient)" opacity="0.9"/>
+  <!-- Soundwave bars in center - shifted left by 8px -->
+  <rect x="77" y="60" width="8" height="25" rx="4" fill="url(#volinaGradient)" opacity="0.9"/>
+  <rect x="87" y="50" width="8" height="40" rx="4" fill="url(#volinaGradient)"/>
+  <rect x="97" y="45" width="8" height="50" rx="4" fill="url(#volinaGradient)" opacity="0.95"/>
+  <rect x="107" y="52" width="8" height="38" rx="4" fill="url(#volinaGradient)"/>
+  <rect x="117" y="62" width="8" height="23" rx="4" fill="url(#volinaGradient)" opacity="0.9"/>
 </svg>
