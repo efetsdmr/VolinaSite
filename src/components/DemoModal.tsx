@@ -93,8 +93,23 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
       newErrors.phoneNumber = 'Please enter a valid phone number';
     }
 
+    if (!formData.notes.trim()) {
+      newErrors.notes = 'Please tell us about your needs';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
+  };
+
+  const isFormComplete = () => {
+    return (
+      formData.fullName.trim() !== '' &&
+      formData.companyName.trim() !== '' &&
+      formData.sector.trim() !== '' &&
+      formData.email.trim() !== '' &&
+      formData.phoneNumber.trim() !== '' &&
+      formData.notes.trim() !== ''
+    );
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -323,8 +338,15 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                   value={formData.notes}
                   onChange={(e) => handleChange('notes', e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 dark:border-gray-700 focus:border-[#3366FF] bg-white dark:bg-gray-900 dark:text-white resize-none"
+                  className={`w-full px-4 py-3 rounded-xl border-2 bg-white dark:bg-gray-900 dark:text-white resize-none ${
+                    errors.notes 
+                      ? 'border-red-500 focus:border-red-500' 
+                      : 'border-gray-200 dark:border-gray-700 focus:border-[#3366FF]'
+                  }`}
                 />
+                {errors.notes && (
+                  <p className="mt-2 text-sm text-red-500">{errors.notes}</p>
+                )}
               </div>
 
               {/* Submit Error Message */}
@@ -338,7 +360,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !isFormComplete()}
                   className="flex-1 bg-[#3366FF] hover:bg-[#3366FF]/90 text-white py-3 px-6 rounded-xl text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (

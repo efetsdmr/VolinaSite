@@ -2716,10 +2716,6 @@
     }
   }
 
-  .dark\:border-\[\#3366FF\]:is(.dark *) {
-    border-color: #36f;
-  }
-
   .dark\:border-\[\#3366FF\]\/40:is(.dark *) {
     border-color: oklab(57.2594% -.0192201 -.232961 / .4);
   }
@@ -2994,10 +2990,6 @@
     .dark\:to-purple-950\/30:is(.dark *) {
       --tw-gradient-to: color-mix(in oklab, var(--color-purple-950) 30%, transparent);
     }
-  }
-
-  .dark\:text-\[\#3366FF\]:is(.dark *) {
-    color: #36f;
   }
 
   .dark\:text-blue-400:is(.dark *) {

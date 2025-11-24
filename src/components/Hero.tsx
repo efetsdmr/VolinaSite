@@ -54,7 +54,6 @@ export function Hero() {
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
-            <Button variant="outline" className="border-[#3366FF] text-[#3366FF] dark:border-[#3366FF] dark:text-[#3366FF]">{t.nav.signIn}</Button>
           </div>
           <div className="flex md:hidden items-center gap-2">
             <Button 

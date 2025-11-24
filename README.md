@@ -1,7 +1,7 @@
 
-  # Volina site
+  # Volina AI
 
-  This is a code bundle for Volina site. The original project is available at https://www.figma.com/design/RnXSLRrRAUbMa71H3bWB6B/Volina-site.
+  This is a code bundle for Volina AI. The original project is available at https://www.figma.com/design/RnXSLRrRAUbMa71H3bWB6B/Volina-AI.
 
   ## Running the code
 
