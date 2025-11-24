@@ -4,7 +4,7 @@ import { Phone, TrendingUp, Target, Menu, Moon, Sun } from 'lucide-react';
 import { useDarkMode } from './DarkModeContext';
 import { DemoModal } from './DemoModal';
 import { TryVolinaModal } from './TryVolinaModal';
-import volinaLogo from 'figma:asset/49959c7d4e27a10999ba3ed912e7a8ffb01555d2.png';
+import volinaLogo from '../assets/volina-logo.svg';
 
 export function Hero() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();

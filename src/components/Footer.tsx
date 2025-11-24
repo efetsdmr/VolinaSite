@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, Twitter, Linkedin, Github, Mail } from 'lucide-react';
 import { DemoModal } from './DemoModal';
-import volinaLogo from 'figma:asset/49959c7d4e27a10999ba3ed912e7a8ffb01555d2.png';
+import volinaLogo from '../assets/volina-logo.svg';
 
 export function Footer() {
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
