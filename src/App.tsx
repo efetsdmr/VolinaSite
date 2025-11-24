@@ -6,8 +6,6 @@ import { ProblemSolution } from './components/ProblemSolution';
 import { HowItWorks } from './components/HowItWorks';
 import { Features } from './components/Features';
 import { Testimonials } from './components/Testimonials';
-import { AdminPanel } from './components/AdminPanel';
-import { Pricing } from './components/Pricing';
 import { Footer } from './components/Footer';
 
 // Suppress Jotai multiple instance warning - this is a known issue with Radix UI in bundled environments
@@ -31,8 +29,6 @@ export default function App() {
           <HowItWorks />
           <Features />
           <Testimonials />
-          <AdminPanel />
-          <Pricing />
           <Footer />
         </div>
       </DarkModeProvider>
