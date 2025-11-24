@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle } from 'lucide-react';
+import { X, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -15,10 +15,12 @@ interface DemoModalProps {
 export function DemoModal({ isOpen, onClose }: DemoModalProps) {
   const { t } = useLanguage();
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
+    sector: '',
     email: '',
     phoneNumber: '',
     notes: ''
@@ -28,10 +30,12 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
   useEffect(() => {
     if (isOpen) {
       setIsSuccess(false);
+      setIsLoading(false);
       setErrors({});
       setFormData({
         fullName: '',
         companyName: '',
+        sector: '',
         email: '',
         phoneNumber: '',
         notes: ''
@@ -73,6 +77,10 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
       newErrors.companyName = 'Company name is required';
     }
 
+    if (!formData.sector.trim()) {
+      newErrors.sector = 'Sector is required';
+    }
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -89,13 +97,54 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (validateForm()) {
-      // Simulate form submission
-      console.log('Form submitted:', formData);
-      setIsSuccess(true);
+      setIsLoading(true);
+      setErrors({});
+
+      // Map sector values to backend format
+      const sectorMap: Record<string, string> = {
+        dental: 'dis-klinigi',
+        restaurant: 'restoran',
+        ecommerce: 'e-ticaret',
+        other: 'diger'
+      };
+
+      const requestBody = {
+        name: formData.fullName,
+        email: formData.email,
+        company: formData.companyName,
+        business_type: sectorMap[formData.sector],
+        message: formData.notes,
+        phone_number: formData.phoneNumber
+      };
+
+      try {
+        const response = await fetch('https://ahudio-site-backend.onrender.com/contactUs/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to submit form');
+        }
+
+        const data = await response.json();
+        console.log('Form submitted successfully:', data);
+        setIsSuccess(true);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        setErrors({ 
+          submit: 'Failed to submit form. Please try again.' 
+        });
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
@@ -189,6 +238,36 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 )}
               </div>
 
+              {/* Sector */}
+              <div>
+                <Label htmlFor="sector" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
+                  {t.modal.demoSector}
+                </Label>
+                <Select 
+                  value={formData.sector} 
+                  onValueChange={(value) => handleChange('sector', value)}
+                >
+                  <SelectTrigger 
+                    className={`w-full px-4 py-3 rounded-xl border-2 bg-white dark:bg-gray-900 dark:text-white ${
+                      errors.sector 
+                        ? 'border-red-500 focus:border-red-500' 
+                        : 'border-gray-200 dark:border-gray-700 focus:border-[#3366FF]'
+                    }`}
+                  >
+                    <SelectValue placeholder={t.modal.demoSectorPlaceholder} />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                    <SelectItem value="dental" className="dark:text-white dark:hover:bg-gray-700">{t.modal.demoSectorDental}</SelectItem>
+                    <SelectItem value="restaurant" className="dark:text-white dark:hover:bg-gray-700">{t.modal.demoSectorRestaurant}</SelectItem>
+                    <SelectItem value="ecommerce" className="dark:text-white dark:hover:bg-gray-700">{t.modal.demoSectorEcommerce}</SelectItem>
+                    <SelectItem value="other" className="dark:text-white dark:hover:bg-gray-700">{t.modal.demoSectorOther}</SelectItem>
+                  </SelectContent>
+                </Select>
+                {errors.sector && (
+                  <p className="mt-2 text-sm text-red-500">{errors.sector}</p>
+                )}
+              </div>
+
               {/* Email Address */}
               <div>
                 <Label htmlFor="email" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
@@ -248,19 +327,35 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 />
               </div>
 
+              {/* Submit Error Message */}
+              {errors.submit && (
+                <div className="bg-red-50 dark:bg-red-900/20 border-2 border-red-200 dark:border-red-800 rounded-xl p-4">
+                  <p className="text-red-600 dark:text-red-400 text-sm">{errors.submit}</p>
+                </div>
+              )}
+
               {/* Buttons */}
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
                   type="submit"
-                  className="flex-1 bg-[#3366FF] hover:bg-[#3366FF]/90 text-white py-3 px-6 rounded-xl text-base transition-colors"
+                  disabled={isLoading}
+                  className="flex-1 bg-[#3366FF] hover:bg-[#3366FF]/90 text-white py-3 px-6 rounded-xl text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {t.modal.demoSubmit}
+                  {isLoading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      {t.modal.demoSubmit}
+                    </span>
+                  ) : (
+                    t.modal.demoSubmit
+                  )}
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={onClose}
-                  className="flex-1 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 py-3 px-6 rounded-xl text-base transition-colors"
+                  disabled={isLoading}
+                  className="flex-1 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 py-3 px-6 rounded-xl text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {t.modal.tryCancel}
                 </Button>

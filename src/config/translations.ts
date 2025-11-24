@@ -197,6 +197,12 @@ export interface Translations {
     demoEmail: string;
     demoPhone: string;
     demoCompany: string;
+    demoSector: string;
+    demoSectorPlaceholder: string;
+    demoSectorDental: string;
+    demoSectorRestaurant: string;
+    demoSectorEcommerce: string;
+    demoSectorOther: string;
     demoEmployees: string;
     demoMessage: string;
     demoSubmit: string;
@@ -413,6 +419,12 @@ export const translations: Record<Language, Translations> = {
       demoEmail: 'Work Email',
       demoPhone: 'Phone Number',
       demoCompany: 'Company Name',
+      demoSector: 'Sector',
+      demoSectorPlaceholder: 'Select your sector',
+      demoSectorDental: 'Dental',
+      demoSectorRestaurant: 'Restaurant',
+      demoSectorEcommerce: 'E-commerce',
+      demoSectorOther: 'Other',
       demoEmployees: 'Number of Employees',
       demoMessage: 'Tell us about your needs (optional)',
       demoSubmit: 'Schedule Demo',
@@ -516,7 +528,7 @@ export const translations: Record<Language, Translations> = {
       feature6Desc: 'Dallanma mantığı ve koşullu yönlendirme ile karmaşık çağrı akışları tasarlayın.',
     },
     testimonials: {
-      title: 'Büyüyen Ekipler Tarafından Seviliyor',
+      title: 'Büyünen Ekipler Tarafından Seviliyor',
       subtitle: 'İşletmelerin Volina AI ile çağrı operasyonlarını nasıl dönüştürdüklerini görün.',
       testimonial1Text: 'Volina AI, potansiyel müşteri yanıt süremizi 4 saatten anında yanıta çıkardı. Dönüşüm oranımız sadece ilk ayda %45 arttı.',
       testimonial1Author: 'Ayşe Yılmaz',
@@ -625,6 +637,12 @@ export const translations: Record<Language, Translations> = {
       demoEmail: 'İş E-postası',
       demoPhone: 'Telefon Numarası',
       demoCompany: 'Şirket Adı',
+      demoSector: 'Sektör',
+      demoSectorPlaceholder: 'Sektörünüzü seçin',
+      demoSectorDental: 'Diş Hekimliği',
+      demoSectorRestaurant: 'Restoran',
+      demoSectorEcommerce: 'E-ticaret',
+      demoSectorOther: 'Diğer',
       demoEmployees: 'Çalışan Sayısı',
       demoMessage: 'İhtiyaçlarınızı anlatın (opsiyonel)',
       demoSubmit: 'Demo Planla',
