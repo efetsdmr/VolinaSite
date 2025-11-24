@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Phone, Mic, MicOff, Volume2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { vapiConfig } from '../config/vapi.config';
-import volinaLogo from 'figma:asset/49959c7d4e27a10999ba3ed912e7a8ffb01555d2.png';
+import volinaLogo from '../assets/volina-logo.svg';
 
 interface TryVolinaModalProps {
   isOpen: boolean;
