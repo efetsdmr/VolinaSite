@@ -1,7 +1,7 @@
 
-  # SaaS Landing Page Design
+  # Volina site
 
-  This is a code bundle for SaaS Landing Page Design. The original project is available at https://www.figma.com/design/RnXSLRrRAUbMa71H3bWB6B/SaaS-Landing-Page-Design.
+  This is a code bundle for Volina site. The original project is available at https://www.figma.com/design/RnXSLRrRAUbMa71H3bWB6B/Volina-site.
 
   ## Running the code
 

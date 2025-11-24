@@ -21,7 +21,6 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
     companyName: '',
     email: '',
     phoneNumber: '',
-    callVolume: '',
     notes: ''
   });
 
@@ -35,7 +34,6 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
         companyName: '',
         email: '',
         phoneNumber: '',
-        callVolume: '',
         notes: ''
       });
     }
@@ -85,10 +83,6 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
       newErrors.phoneNumber = 'Phone number is required';
     } else if (!/^[\d\s\-\+\(\)]+$/.test(formData.phoneNumber)) {
       newErrors.phoneNumber = 'Please enter a valid phone number';
-    }
-
-    if (!formData.callVolume) {
-      newErrors.callVolume = 'Please select your daily call volume';
     }
 
     setErrors(newErrors);
@@ -236,36 +230,6 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 />
                 {errors.phoneNumber && (
                   <p className="mt-2 text-sm text-red-500">{errors.phoneNumber}</p>
-                )}
-              </div>
-
-              {/* Call Volume */}
-              <div>
-                <Label htmlFor="callVolume" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
-                  {t.modal.demoEmployees}
-                </Label>
-                <Select 
-                  value={formData.callVolume} 
-                  onValueChange={(value) => handleChange('callVolume', value)}
-                >
-                  <SelectTrigger 
-                    className={`w-full px-4 py-3 rounded-xl border-2 bg-white dark:bg-gray-900 dark:text-white ${
-                      errors.callVolume 
-                        ? 'border-red-500 focus:border-red-500' 
-                        : 'border-gray-200 dark:border-gray-700 focus:border-[#3366FF]'
-                    }`}
-                  >
-                    <SelectValue placeholder="Select volume range" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                    <SelectItem value="0-50" className="dark:text-white dark:hover:bg-gray-700">0–50 calls/day</SelectItem>
-                    <SelectItem value="50-200" className="dark:text-white dark:hover:bg-gray-700">50–200 calls/day</SelectItem>
-                    <SelectItem value="200-1000" className="dark:text-white dark:hover:bg-gray-700">200–1,000 calls/day</SelectItem>
-                    <SelectItem value="1000+" className="dark:text-white dark:hover:bg-gray-700">1,000+ calls/day</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.callVolume && (
-                  <p className="mt-2 text-sm text-red-500">{errors.callVolume}</p>
                 )}
               </div>
 
