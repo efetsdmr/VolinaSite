@@ -5,6 +5,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Label } from './ui/label';
+import { useLanguage } from './LanguageContext';
 
 interface DemoModalProps {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface DemoModalProps {
 }
 
 export function DemoModal({ isOpen, onClose }: DemoModalProps) {
+  const { t } = useLanguage();
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formData, setFormData] = useState({
@@ -140,10 +142,10 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
             {/* Header */}
             <div className="mb-8">
               <h2 className="text-3xl sm:text-4xl text-[#333333] dark:text-white mb-3">
-                Book a Demo Call
+                {t.modal.demoTitle}
               </h2>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
-                Let our AI voice agent call your leads and show you how it works.
+                {t.modal.demoSubtitle}
               </p>
             </div>
 
@@ -152,7 +154,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
               {/* Full Name */}
               <div>
                 <Label htmlFor="fullName" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
-                  Full Name
+                  {t.modal.demoName}
                 </Label>
                 <Input
                   id="fullName"
@@ -174,7 +176,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
               {/* Company Name */}
               <div>
                 <Label htmlFor="companyName" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
-                  Company Name
+                  {t.modal.demoCompany}
                 </Label>
                 <Input
                   id="companyName"
@@ -196,7 +198,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
               {/* Email Address */}
               <div>
                 <Label htmlFor="email" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
-                  Email Address
+                  {t.modal.demoEmail}
                 </Label>
                 <Input
                   id="email"
@@ -218,7 +220,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
               {/* Phone Number */}
               <div>
                 <Label htmlFor="phoneNumber" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
-                  Phone Number
+                  {t.modal.demoPhone}
                 </Label>
                 <Input
                   id="phoneNumber"
@@ -240,7 +242,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
               {/* Call Volume */}
               <div>
                 <Label htmlFor="callVolume" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
-                  Estimated Daily Call Volume
+                  {t.modal.demoEmployees}
                 </Label>
                 <Select 
                   value={formData.callVolume} 
@@ -270,7 +272,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
               {/* Notes */}
               <div>
                 <Label htmlFor="notes" className="text-sm text-gray-700 dark:text-gray-300 mb-2 block">
-                  Notes (Optional)
+                  {t.modal.demoMessage}
                 </Label>
                 <Textarea
                   id="notes"
@@ -288,7 +290,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                   type="submit"
                   className="flex-1 bg-[#3366FF] hover:bg-[#3366FF]/90 text-white py-3 px-6 rounded-xl text-base transition-colors"
                 >
-                  Submit Request
+                  {t.modal.demoSubmit}
                 </Button>
                 <Button
                   type="button"
@@ -296,7 +298,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                   onClick={onClose}
                   className="flex-1 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 py-3 px-6 rounded-xl text-base transition-colors"
                 >
-                  Cancel
+                  {t.modal.tryCancel}
                 </Button>
               </div>
             </form>
@@ -309,10 +311,10 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 <CheckCircle className="w-10 h-10 text-green-600 dark:text-green-400" />
               </div>
               <h2 className="text-3xl sm:text-4xl text-[#333333] dark:text-white mb-4">
-                Request Received!
+                {t.modal.demoSuccess}
               </h2>
               <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-8">
-                Your demo request has been received! We'll contact you shortly.
+                {t.modal.demoSuccessMessage}
               </p>
             </div>
             

@@ -1,42 +1,45 @@
 import React from 'react';
 import { Mic, Globe, UserCircle, Workflow, RefreshCw, BarChart3 } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 export function Features() {
+  const { t } = useLanguage();
+  
   const features = [
     {
       icon: Mic,
-      title: 'Real-time Human-like Voice',
-      description: 'Advanced neural voices that sound natural and engaging. Indistinguishable from human agents.',
+      title: t.features.feature1Title,
+      description: t.features.feature1Desc,
       color: '#3366FF'
     },
     {
       icon: Globe,
-      title: 'Multi-language Support',
-      description: 'Speak to customers in 30+ languages with native accents and cultural awareness.',
+      title: t.features.feature2Title,
+      description: t.features.feature2Desc,
       color: '#8C51FF'
     },
     {
       icon: UserCircle,
-      title: 'Voice Profiles',
-      description: 'Choose from multiple voice profiles. Customize gender, tone, accent, and speaking style.',
+      title: t.features.feature3Title,
+      description: t.features.feature3Desc,
       color: '#3366FF'
     },
     {
       icon: Workflow,
-      title: 'Campaign Workflow & Rules',
-      description: 'Build complex call flows with our visual rule engine. Branch logic based on responses.',
+      title: t.features.feature4Title,
+      description: t.features.feature4Desc,
       color: '#8C51FF'
     },
     {
       icon: RefreshCw,
-      title: 'Persistent Follow-up',
-      description: 'Automatic follow-up calls and objection handling. Never let a lead go cold.',
+      title: t.features.feature5Title,
+      description: t.features.feature5Desc,
       color: '#3366FF'
     },
     {
       icon: BarChart3,
-      title: 'Dashboard & Analytics',
-      description: 'Complete transcripts, sentiment analysis, and conversion tracking in real-time.',
+      title: t.features.feature6Title,
+      description: t.features.feature6Desc,
       color: '#8C51FF'
     }
   ];
@@ -46,13 +49,13 @@ export function Features() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         <div className="text-center mb-10 sm:mb-16">
           <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900 mb-4 sm:mb-6">
-            <span className="text-xs sm:text-sm text-[#8C51FF] dark:text-purple-400">Features</span>
+            <span className="text-xs sm:text-sm text-[#8C51FF] dark:text-purple-400">{t.features.title}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-[#333333] dark:text-white mb-3 sm:mb-6 px-4">
-            Everything You Need to Scale
+            {t.features.title}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
-            Powerful features designed to convert more leads and save time
+            {t.features.subtitle}
           </p>
         </div>
 

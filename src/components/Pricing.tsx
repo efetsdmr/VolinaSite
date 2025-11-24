@@ -1,59 +1,54 @@
 import React from 'react';
 import { Check, Sparkles } from 'lucide-react';
 import { Button } from './ui/button';
+import { useLanguage } from './LanguageContext';
 
 export function Pricing() {
+  const { t } = useLanguage();
+  
   const plans = [
     {
-      name: 'Starter',
-      price: '$299',
-      period: '/month',
-      description: 'Perfect for small teams testing AI voice',
+      name: t.pricing.starter,
+      price: t.pricing.starterPrice,
+      period: t.pricing.perMonth,
+      description: t.pricing.starterDesc,
       features: [
-        'Up to 500 calls/month',
-        '2 voice profiles',
-        'Basic analytics dashboard',
-        'Email support',
-        'Single campaign',
-        'Standard voice quality'
+        t.pricing.starterFeature1,
+        t.pricing.starterFeature2,
+        t.pricing.starterFeature3,
+        t.pricing.starterFeature4
       ],
-      cta: 'Start Free Trial',
+      cta: t.pricing.getStarted,
       popular: false
     },
     {
-      name: 'Professional',
-      price: '$799',
-      period: '/month',
-      description: 'For growing businesses scaling outreach',
+      name: t.pricing.professional,
+      price: t.pricing.professionalPrice,
+      period: t.pricing.perMonth,
+      description: t.pricing.professionalDesc,
       features: [
-        'Up to 5,000 calls/month',
-        '10 custom voice profiles',
-        'Advanced analytics & AI insights',
-        'Priority phone & chat support',
-        'Unlimited campaigns',
-        'Premium voice quality',
-        'Multi-language support (10 languages)',
-        'CRM integrations (Salesforce, HubSpot)'
+        t.pricing.professionalFeature1,
+        t.pricing.professionalFeature2,
+        t.pricing.professionalFeature3,
+        t.pricing.professionalFeature4,
+        t.pricing.professionalFeature5
       ],
-      cta: 'Start Free Trial',
+      cta: t.pricing.getStarted,
       popular: true
     },
     {
-      name: 'Enterprise',
-      price: 'Custom',
+      name: t.pricing.enterprise,
+      price: t.pricing.enterprisePrice,
       period: '',
-      description: 'For large teams with complex needs',
+      description: t.pricing.enterpriseDesc,
       features: [
-        'Unlimited calls',
-        'Unlimited voice profiles',
-        'Custom AI training',
-        'Dedicated account manager',
-        'White-label options',
-        'Advanced security & compliance',
-        'Custom integrations',
-        'SLA guarantee'
+        t.pricing.enterpriseFeature1,
+        t.pricing.enterpriseFeature2,
+        t.pricing.enterpriseFeature3,
+        t.pricing.enterpriseFeature4,
+        t.pricing.enterpriseFeature5
       ],
-      cta: 'Contact Sales',
+      cta: t.pricing.contactSales,
       popular: false
     }
   ];
@@ -63,13 +58,13 @@ export function Pricing() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12">
         <div className="text-center mb-10 sm:mb-16">
           <div className="inline-block px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 mb-4 sm:mb-6">
-            <span className="text-xs sm:text-sm text-green-600 dark:text-green-400">Pricing</span>
+            <span className="text-xs sm:text-sm text-green-600 dark:text-green-400">{t.nav.pricing}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-[#333333] dark:text-white mb-3 sm:mb-6 px-4">
-            Simple, Transparent Pricing
+            {t.pricing.title}
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto px-4">
-            Choose the plan that fits your business. All plans include 14-day free trial.
+            {t.pricing.subtitle}
           </p>
         </div>
 
@@ -87,7 +82,7 @@ export function Pricing() {
                 <div className="absolute -top-3 sm:-top-4 left-1/2 -translate-x-1/2">
                   <div className="bg-gradient-to-r from-[#3366FF] to-[#8C51FF] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm flex items-center gap-2">
                     <Sparkles className="w-3 h-3 sm:w-4 sm:h-4" />
-                    Most Popular
+                    {t.pricing.mostPopular}
                   </div>
                 </div>
               )}
@@ -101,58 +96,26 @@ export function Pricing() {
                 </div>
               </div>
 
+              <ul className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                {plan.features.map((feature, featureIndex) => (
+                  <li key={featureIndex} className="flex items-start gap-3">
+                    <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm sm:text-base text-gray-600 dark:text-gray-300">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
               <Button
-                className={`w-full mb-6 sm:mb-8 py-5 sm:py-6 text-base sm:text-lg ${
+                className={`w-full py-5 sm:py-6 text-base sm:text-lg ${
                   plan.popular
-                    ? 'bg-gradient-to-r from-[#3366FF] to-[#8C51FF] text-white hover:opacity-90'
-                    : 'bg-[#333333] dark:bg-gray-700 text-white hover:bg-[#333333]/90 dark:hover:bg-gray-600'
+                    ? 'bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90'
+                    : 'bg-[#333333] dark:bg-gray-700 hover:bg-[#333333]/90 dark:hover:bg-gray-600'
                 }`}
               >
                 {plan.cta}
               </Button>
-
-              <ul className="space-y-3 sm:space-y-4">
-                {plan.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-start gap-2 sm:gap-3">
-                    <div className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-green-100 dark:bg-green-950/30 flex items-center justify-center mt-0.5">
-                      <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-600 dark:text-green-400" />
-                    </div>
-                    <span className="text-sm sm:text-base text-gray-700 dark:text-gray-300">{feature}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
-        </div>
-
-        {/* FAQ Callout */}
-        <div className="mt-10 sm:mt-16 text-center px-4">
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-3 sm:mb-4">Have questions about pricing?</p>
-          <a href="#" className="text-sm sm:text-base text-[#3366FF] hover:underline">
-            View detailed pricing FAQ →
-          </a>
-        </div>
-
-        {/* Trust Badges */}
-        <div className="mt-10 sm:mt-16 flex flex-wrap items-center justify-center gap-4 sm:gap-6 lg:gap-8 opacity-60 px-4">
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-500 flex items-center justify-center">
-              <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-            </div>
-            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">No credit card required</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-500 flex items-center justify-center">
-              <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-            </div>
-            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">14-day free trial</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-500 flex items-center justify-center">
-              <Check className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
-            </div>
-            <span className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Cancel anytime</span>
-          </div>
         </div>
       </div>
     </section>

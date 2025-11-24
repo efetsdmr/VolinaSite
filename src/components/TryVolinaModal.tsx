@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Phone, Mic, MicOff, Volume2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useLanguage } from './LanguageContext';
 import { vapiConfig } from '../config/vapi.config';
 import volinaLogo from '../assets/volina-logo.svg';
 
@@ -12,6 +13,7 @@ interface TryVolinaModalProps {
 }
 
 export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'Volina AI Assistant' }: TryVolinaModalProps) {
+  const { t } = useLanguage();
   const [callState, setCallState] = useState<'idle' | 'permission' | 'connecting' | 'active' | 'ended'>('idle');
   const [isMuted, setIsMuted] = useState(false);
   const [callDuration, setCallDuration] = useState(0);
@@ -269,10 +271,10 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                   <Phone className="w-12 h-12 text-white" />
                 </div>
                 <h2 className="text-3xl sm:text-4xl text-[#333333] dark:text-white mb-3">
-                  {assistantName}
+                  {t.modal.tryAssistantName}
                 </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-300">
-                  Experience our AI voice agent in action
+                  {t.modal.tryExperience}
                 </p>
               </motion.div>
 
@@ -284,10 +286,10 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 className="space-y-3 mb-8 text-left max-w-sm mx-auto"
               >
                 {[
-                  'Natural conversation flow',
-                  'Real-time voice recognition',
-                  'Smart appointment scheduling',
-                  'Multi-language support'
+                  t.modal.tryFeature1,
+                  t.modal.tryFeature2,
+                  t.modal.tryFeature3,
+                  t.modal.tryFeature4
                 ].map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <div className="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
@@ -309,7 +311,7 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 disabled={!!error}
                 className="w-full bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90 text-white py-5 rounded-2xl text-lg transition-opacity shadow-lg shadow-blue-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Start Voice Call
+                {t.modal.tryStartCall}
               </motion.button>
             </div>
           )}
@@ -336,7 +338,7 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 transition={{ delay: 0.2 }}
                 className="text-2xl sm:text-3xl text-[#333333] dark:text-white mb-3"
               >
-                Microphone Access Required
+                {t.modal.tryMicRequired}
               </motion.h2>
 
               {/* Description */}
@@ -347,16 +349,16 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 className="space-y-4 mb-6"
               >
                 <p className="text-gray-600 dark:text-gray-300">
-                  Click "Allow" when your browser asks for microphone permission to start the voice call.
+                  {t.modal.tryMicDescription}
                 </p>
 
                 {error && (
                   <div className="bg-yellow-50 dark:bg-yellow-950/30 rounded-xl p-3 border border-yellow-200 dark:border-yellow-800">
                     <p className="text-xs text-yellow-700 dark:text-yellow-400 mb-1">
-                      ⚠️ <strong>Limited in Figma Preview</strong>
+                      ⚠️ <strong>{t.modal.tryLimitedPreview}</strong>
                     </p>
                     <p className="text-xs text-yellow-600 dark:text-yellow-500">
-                      For full voice functionality, open in a new tab or deploy to a real website.
+                      {t.modal.tryLimitedPreviewDesc}
                     </p>
                   </div>
                 )}
@@ -365,7 +367,7 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
-                  <span>Your voice is private and secure</span>
+                  <span>{t.modal.tryPrivateSecure}</span>
                 </div>
               </motion.div>
 
@@ -377,7 +379,7 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 onClick={startCall}
                 className="w-full bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90 text-white py-4 rounded-2xl text-lg transition-opacity shadow-lg shadow-blue-500/30 mb-3"
               >
-                Allow Microphone & Start Call
+                {t.modal.tryAllow}
               </motion.button>
 
               {/* Cancel Button */}
@@ -388,7 +390,7 @@ export function TryVolinaModal({ isOpen, onClose, workflowId, assistantName = 'V
                 onClick={() => setCallState('idle')}
                 className="w-full text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 py-2 rounded-xl transition-colors"
               >
-                Cancel
+                {t.modal.tryCancel}
               </motion.button>
             </div>
           )}
