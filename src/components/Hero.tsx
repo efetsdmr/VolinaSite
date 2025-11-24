@@ -28,7 +28,7 @@ export function Hero() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Navigation */}
         <nav className="flex items-center justify-between py-4 sm:py-6">
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-3 -ml-2 sm:-ml-4">
             <img src={volinaLogo} alt="Volina AI Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
             <span className="text-lg sm:text-xl text-[#333333] dark:text-white">Volina AI</span>
           </div>
@@ -36,23 +36,15 @@ export function Hero() {
             <a href="#solutions" className="text-[#333333] dark:text-gray-300 hover:text-[#3366FF] dark:hover:text-[#3366FF] transition-colors">{t.nav.solutions}</a>
             <a href="#how-it-works" className="text-[#333333] dark:text-gray-300 hover:text-[#3366FF] dark:hover:text-[#3366FF] transition-colors">{t.nav.howItWorks}</a>
             <a href="#case-studies" className="text-[#333333] dark:text-gray-300 hover:text-[#3366FF] dark:hover:text-[#3366FF] transition-colors">{t.nav.caseStudies}</a>
-            <a href="#pricing" className="text-[#333333] dark:text-gray-300 hover:text-[#3366FF] dark:hover:text-[#3366FF] transition-colors">{t.nav.pricing}</a>
             <Button 
               variant="ghost" 
               size="icon" 
               onClick={toggleLanguage}
-              className="rounded-full"
+              className="rounded-full flex items-center gap-1.5"
               title={language === 'en' ? 'Türkçe' : 'English'}
             >
+              <Globe className="w-4 h-4" />
               <span className="text-sm">{language === 'en' ? 'TR' : 'EN'}</span>
-            </Button>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={toggleDarkMode}
-              className="rounded-full"
-            >
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
           </div>
           <div className="flex md:hidden items-center gap-2">
@@ -60,8 +52,9 @@ export function Hero() {
               variant="ghost" 
               size="icon" 
               onClick={toggleLanguage}
-              className="rounded-full"
+              className="rounded-full flex items-center gap-1"
             >
+              <Globe className="w-3.5 h-3.5" />
               <span className="text-xs">{language === 'en' ? 'TR' : 'EN'}</span>
             </Button>
             <Button 
