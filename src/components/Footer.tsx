@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Phone, Twitter, Linkedin, Github, Mail } from 'lucide-react';
 import { useLanguage } from './LanguageContext';
 import { DemoModal } from './DemoModal';
 import volinaLogo from '../assets/volina-logo.svg';
@@ -75,20 +74,6 @@ export function Footer() {
             <p className="text-sm sm:text-base text-gray-400 dark:text-gray-500 mb-4 sm:mb-6 max-w-xs">
               {t.footer.description}
             </p>
-            <div className="flex items-center gap-3 sm:gap-4">
-              <a href="#" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 flex items-center justify-center transition-colors">
-                <Twitter className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a href="#" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 flex items-center justify-center transition-colors">
-                <Linkedin className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a href="#" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 flex items-center justify-center transition-colors">
-                <Github className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a href="#" className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gray-700 dark:bg-gray-800 hover:bg-gray-600 dark:hover:bg-gray-700 flex items-center justify-center transition-colors">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-            </div>
           </div>
 
           {/* Link Columns */}
