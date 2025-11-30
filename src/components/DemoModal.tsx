@@ -217,7 +217,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 <Input
                   id="fullName"
                   type="text"
-                  placeholder="John Smith"
+                  placeholder={t.modal.demoNamePlaceholder}
                   value={formData.fullName}
                   onChange={(e) => handleChange('fullName', e.target.value)}
                   className={`w-full px-4 py-3 rounded-xl border-2 bg-white dark:bg-gray-900 dark:text-white ${
@@ -239,7 +239,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 <Input
                   id="companyName"
                   type="text"
-                  placeholder="Acme Inc."
+                  placeholder={t.modal.demoCompanyPlaceholder}
                   value={formData.companyName}
                   onChange={(e) => handleChange('companyName', e.target.value)}
                   className={`w-full px-4 py-3 rounded-xl border-2 bg-white dark:bg-gray-900 dark:text-white ${
@@ -291,7 +291,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="john@acme.com"
+                  placeholder={t.modal.demoEmailPlaceholder}
                   value={formData.email}
                   onChange={(e) => handleChange('email', e.target.value)}
                   className={`w-full px-4 py-3 rounded-xl border-2 bg-white dark:bg-gray-900 dark:text-white ${
@@ -313,7 +313,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 <Input
                   id="phoneNumber"
                   type="tel"
-                  placeholder="+1 (555) 123-4567"
+                  placeholder={t.modal.demoPhonePlaceholder}
                   value={formData.phoneNumber}
                   onChange={(e) => handleChange('phoneNumber', e.target.value)}
                   className={`w-full px-4 py-3 rounded-xl border-2 bg-white dark:bg-gray-900 dark:text-white ${
@@ -334,7 +334,7 @@ export function DemoModal({ isOpen, onClose }: DemoModalProps) {
                 </Label>
                 <Textarea
                   id="notes"
-                  placeholder="Tell us about your use case..."
+                  placeholder={t.modal.demoMessagePlaceholder}
                   value={formData.notes}
                   onChange={(e) => handleChange('notes', e.target.value)}
                   rows={4}

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { useLanguage } from './LanguageContext';
+import { TryVolinaModal } from './TryVolinaModal';
 
 export function Testimonials() {
   const { t } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [isTryModalOpen, setIsTryModalOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,19 +31,19 @@ export function Testimonials() {
       quote: t.testimonials.testimonial1Text,
       author: t.testimonials.testimonial1Author,
       role: t.testimonials.testimonial1Role,
-      avatar: '👩‍💼'
+      showButton: true
     },
     {
       quote: t.testimonials.testimonial2Text,
       author: t.testimonials.testimonial2Author,
       role: t.testimonials.testimonial2Role,
-      avatar: '👨‍💼'
+      showButton: true
     },
     {
       quote: t.testimonials.testimonial3Text,
       author: t.testimonials.testimonial3Author,
       role: t.testimonials.testimonial3Role,
-      avatar: '👩‍💼'
+      showButton: true
     }
   ];
 
@@ -77,7 +79,7 @@ export function Testimonials() {
             {visibleTestimonials.map((testimonial, index) => (
               <div 
                 key={currentIndex + index}
-                className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-100 dark:border-gray-700"
+                className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col"
               >
                 <Quote className="w-10 h-10 sm:w-12 sm:h-12 text-[#3366FF] mb-4 sm:mb-6" />
                 
@@ -85,15 +87,19 @@ export function Testimonials() {
                   "{testimonial.quote}"
                 </p>
 
-                <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-[#3366FF] to-[#8C51FF] flex items-center justify-center text-xl sm:text-2xl">
-                    {testimonial.avatar}
-                  </div>
-                  <div>
-                    <div className="text-base sm:text-lg text-[#333333] dark:text-white">{testimonial.author}</div>
-                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</div>
-                  </div>
+                <div className="mt-auto">
+                  <div className="text-base sm:text-lg text-[#333333] dark:text-white">{testimonial.author}</div>
+                  <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</div>
                 </div>
+                
+                {testimonial.showButton && (
+                  <button 
+                    onClick={() => setIsTryModalOpen(true)}
+                    className="mt-4 w-full px-4 py-2.5 bg-gradient-to-r from-[#3366FF] to-[#8C51FF] text-white rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
+                  >
+                    {t.testimonials.tryModel}
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -126,6 +132,9 @@ export function Testimonials() {
           )}
         </div>
       </div>
+
+      {/* Try Volina Modal */}
+      <TryVolinaModal isOpen={isTryModalOpen} onClose={() => setIsTryModalOpen(false)} />
     </section>
   );
 }

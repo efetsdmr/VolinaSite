@@ -90,6 +90,7 @@ export interface Translations {
     testimonial3Text: string;
     testimonial3Author: string;
     testimonial3Role: string;
+    tryModel: string;
   };
 
   // Admin Panel
@@ -194,9 +195,13 @@ export interface Translations {
     demoTitle: string;
     demoSubtitle: string;
     demoName: string;
+    demoNamePlaceholder: string;
     demoEmail: string;
+    demoEmailPlaceholder: string;
     demoPhone: string;
+    demoPhonePlaceholder: string;
     demoCompany: string;
+    demoCompanyPlaceholder: string;
     demoSector: string;
     demoSectorPlaceholder: string;
     demoSectorDental: string;
@@ -205,6 +210,7 @@ export interface Translations {
     demoSectorOther: string;
     demoEmployees: string;
     demoMessage: string;
+    demoMessagePlaceholder: string;
     demoSubmit: string;
     demoSuccess: string;
     demoSuccessMessage: string;
@@ -246,7 +252,7 @@ export const translations: Record<Language, Translations> = {
     nav: {
       solutions: 'Solutions',
       howItWorks: 'How it Works',
-      caseStudies: 'Case Studies',
+      caseStudies: 'Customer Stories',
       pricing: 'Pricing',
       signIn: 'Sign In',
     },
@@ -312,15 +318,16 @@ export const translations: Record<Language, Translations> = {
     testimonials: {
       title: 'Loved by Growing Teams',
       subtitle: 'See how businesses are transforming their call operations with Volina AI.',
-      testimonial1Text: 'Volina AI increased our lead response time from 4 hours to instant. Our conversion rate jumped 45% in the first month alone.',
-      testimonial1Author: 'Sarah Chen',
-      testimonial1Role: 'VP of Sales, TechCorp',
-      testimonial2Text: 'We went from missing 60% of after-hours calls to answering 100%. The ROI was positive within 3 weeks.',
-      testimonial2Author: 'Michael Rodriguez',
-      testimonial2Role: 'CEO, GrowthLabs',
-      testimonial3Text: 'The AI sounds so natural that customers don\'t realize they\'re talking to a bot. It\'s honestly mind-blowing.',
-      testimonial3Author: 'Emily Watson',
-      testimonial3Role: 'Operations Director, ServicePro',
+      testimonial1Text: 'Volina AI increased our lead response time from 4 hours to instant response. Our conversion rate increased by 45% in just the first month.',
+      testimonial1Author: 'FormLab',
+      testimonial1Role: 'Nutrition and Consulting',
+      testimonial2Text: 'Our reservation line was constantly busy. Now we handle many more reservations with zero wait time.',
+      testimonial2Author: 'L\'Ancora',
+      testimonial2Role: 'Seafood Restaurant',
+      testimonial3Text: 'No potential patient is missed anymore. The AI assistant greets customers who call at any time of day, answers their questions, and books appointments.',
+      testimonial3Author: 'Smile and Holiday',
+      testimonial3Role: 'Dental Clinic',
+      tryModel: 'Try the Model',
     },
     adminPanel: {
       title: 'Complete Control & Visibility',
@@ -387,7 +394,7 @@ export const translations: Record<Language, Translations> = {
       product: 'Product',
       productFeatures: 'Features',
       productPricing: 'Pricing',
-      productCaseStudies: 'Case Studies',
+      productCaseStudies: 'Customer Stories',
       productIntegrations: 'Integrations',
       productApiDocs: 'API Docs',
       company: 'Company',
@@ -416,9 +423,13 @@ export const translations: Record<Language, Translations> = {
       demoTitle: 'Book Your Demo',
       demoSubtitle: 'See how Volina AI can transform your call operations',
       demoName: 'Full Name',
+      demoNamePlaceholder: 'John Smith',
       demoEmail: 'Work Email',
+      demoEmailPlaceholder: 'john@acme.com',
       demoPhone: 'Phone Number',
+      demoPhonePlaceholder: '+1 (555) 123-4567',
       demoCompany: 'Company Name',
+      demoCompanyPlaceholder: 'Acme Inc.',
       demoSector: 'Sector',
       demoSectorPlaceholder: 'Select your sector',
       demoSectorDental: 'Dental',
@@ -427,6 +438,7 @@ export const translations: Record<Language, Translations> = {
       demoSectorOther: 'Other',
       demoEmployees: 'Number of Employees',
       demoMessage: 'Tell us about your needs',
+      demoMessagePlaceholder: 'Tell us about your use case...',
       demoSubmit: 'Schedule Demo',
       demoSuccess: 'Demo Scheduled!',
       demoSuccessMessage: 'We\'ll send you a confirmation email shortly with next steps.',
@@ -464,7 +476,7 @@ export const translations: Record<Language, Translations> = {
     nav: {
       solutions: 'Çözümler',
       howItWorks: 'Nasıl Çalışır',
-      caseStudies: 'Vaka Çalışmaları',
+      caseStudies: 'Müşteri Hikayeleri',
       pricing: 'Fiyatlandırma',
       signIn: 'Giriş Yap',
     },
@@ -531,14 +543,15 @@ export const translations: Record<Language, Translations> = {
       title: 'Büyünen Ekipler Tarafından Seviliyor',
       subtitle: 'İşletmelerin Volina AI ile çağrı operasyonlarını nasıl dönüştürdüklerini görün.',
       testimonial1Text: 'Volina AI, potansiyel müşteri yanıt süremizi 4 saatten anında yanıta çıkardı. Dönüşüm oranımız sadece ilk ayda %45 arttı.',
-      testimonial1Author: 'Ayşe Yılmaz',
-      testimonial1Role: 'Satış Başkan Yardımcısı, TechCorp',
-      testimonial2Text: 'Mesai sonrası çağrıların %60\'ını kaçırmaktan %100\'ünü yanıtlamaya geçtik. Yatırım getirisi 3 hafta içinde pozitife döndü.',
-      testimonial2Author: 'Mehmet Kaya',
-      testimonial2Role: 'CEO, GrowthLabs',
-      testimonial3Text: 'AI o kadar doğal konuşuyor ki müşteriler bir botla konuştuklarını anlamıyor. Gerçekten inanılmaz.',
-      testimonial3Author: 'Elif Demir',
-      testimonial3Role: 'Operasyon Direktörü, ServicePro',
+      testimonial1Author: 'FormLab',
+      testimonial1Role: 'Beslenme ve Danışmanlık',
+      testimonial2Text: 'Rezervasyon hattımız sürekli meşguldü. Şimdi çok daha fazla rezervasyonu sıfır bekleme süresiyle hallediyoruz.',
+      testimonial2Author: 'L\'Ancora',
+      testimonial2Role: 'Balık Restoranı',
+      testimonial3Text: 'Artık hiçbir potansiyel hasta kaçmıyor. AI asistan günün her saati arayan müşterileri karşılıyor, sorularını yanıtlıyor ve randevu alıyor.',
+      testimonial3Author: 'Smile and Holiday',
+      testimonial3Role: 'Diş Kliniği',
+      tryModel: 'Modeli Dene',
     },
     adminPanel: {
       title: 'Tam Kontrol ve Görünürlük',
@@ -605,7 +618,7 @@ export const translations: Record<Language, Translations> = {
       product: 'Ürün',
       productFeatures: 'Özellikler',
       productPricing: 'Fiyatlandırma',
-      productCaseStudies: 'Vaka Çalışmaları',
+      productCaseStudies: 'Müşteri Hikayeleri',
       productIntegrations: 'Entegrasyonlar',
       productApiDocs: 'API Dökümanları',
       company: 'Şirket',
@@ -634,9 +647,13 @@ export const translations: Record<Language, Translations> = {
       demoTitle: 'Demo Talebinde Bulunun',
       demoSubtitle: 'Volina AI\'nın çağrı operasyonlarınızı nasıl dönüştürebileceğini görün',
       demoName: 'Ad Soyad',
+      demoNamePlaceholder: 'Ahmet Yılmaz',
       demoEmail: 'İş E-postası',
+      demoEmailPlaceholder: 'ahmet@ornek.com.tr',
       demoPhone: 'Telefon Numarası',
+      demoPhonePlaceholder: '+90 (555) 123-4567',
       demoCompany: 'Şirket Adı',
+      demoCompanyPlaceholder: 'Örnek A.Ş.',
       demoSector: 'Sektör',
       demoSectorPlaceholder: 'Sektörünüzü seçin',
       demoSectorDental: 'Diş Hekimliği',
@@ -645,6 +662,7 @@ export const translations: Record<Language, Translations> = {
       demoSectorOther: 'Diğer',
       demoEmployees: 'Çalışan Sayısı',
       demoMessage: 'İhtiyaçlarınızı anlatın',
+      demoMessagePlaceholder: 'Kullanım senaryonuzu anlatın...',
       demoSubmit: 'Demo Planla',
       demoSuccess: 'Demo Planlandı!',
       demoSuccessMessage: 'Size kısa süre içinde sonraki adımları içeren bir onay e-postası göndereceğiz.',

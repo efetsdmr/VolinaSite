@@ -7,35 +7,7 @@ export function Footer() {
   const { t } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
 
-  const footerLinks = {
-    [t.footer.product]: [
-      t.footer.productFeatures,
-      t.footer.productPricing,
-      t.footer.productCaseStudies,
-      t.footer.productIntegrations,
-      t.footer.productApiDocs
-    ],
-    [t.footer.company]: [
-      t.footer.companyAbout,
-      t.footer.companyCareers,
-      t.footer.companyBlog,
-      t.footer.companyPress,
-      t.footer.companyContact
-    ],
-    [t.footer.resources]: [
-      t.footer.resourcesHelp,
-      t.footer.resourcesCommunity,
-      t.footer.resourcesWebinars,
-      t.footer.resourcesStatus,
-      t.footer.resourcesPartners
-    ],
-    [t.footer.legal]: [
-      t.footer.legalPrivacy,
-      t.footer.legalTerms,
-      t.footer.legalCookies,
-      t.footer.legalGdpr
-    ]
-  };
+  const footerLinks = {};
 
   return (
     <footer className="bg-[#333333] dark:bg-gray-950 text-white">
@@ -63,34 +35,17 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Links Section */}
-        <div className="py-12 sm:py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
-          {/* Brand Column */}
-          <div className="col-span-2">
+        {/* Brand Section */}
+        <div className="py-12 sm:py-16">
+          <div className="flex flex-col items-center text-center">
             <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
               <img src={volinaLogo} alt="Volina AI Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
               <span className="text-lg sm:text-xl">Volina AI</span>
             </div>
-            <p className="text-sm sm:text-base text-gray-400 dark:text-gray-500 mb-4 sm:mb-6 max-w-xs">
+            <p className="text-sm sm:text-base text-gray-400 dark:text-gray-500 max-w-md">
               {t.footer.description}
             </p>
           </div>
-
-          {/* Link Columns */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h4 className="text-sm sm:text-base text-white mb-3 sm:mb-4">{category}</h4>
-              <ul className="space-y-2 sm:space-y-3">
-                {links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 hover:text-white dark:hover:text-gray-300 transition-colors">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
         </div>
 
         {/* Bottom Bar */}
