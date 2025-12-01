@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
-import { LogOut, Users, Moon, Sun, Globe } from 'lucide-react';
+import { LogOut, Users, Moon, Sun, Globe, Info, X } from 'lucide-react';
 import { useDarkMode } from '../components/DarkModeContext';
 import { useLanguage } from '../components/LanguageContext';
 import volinaLogo from '../assets/volina-logo.svg';
@@ -21,6 +21,7 @@ export function AdminDashboard() {
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { language, setLanguage, t } = useLanguage();
   const [demoRequests, setDemoRequests] = useState<DemoRequest[]>([]);
+  const [selectedRequest, setSelectedRequest] = useState<DemoRequest | null>(null);
 
   // Mock data - Replace with actual API call
   useEffect(() => {
@@ -165,32 +166,26 @@ export function AdminDashboard() {
                 </p>
               </div>
             ) : (
-              <table className="w-full table-fixed">
+              <table className="w-full min-w-[800px]">
                 <thead className="bg-gray-50 dark:bg-gray-900/50">
                   <tr>
-                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[12%]">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[200px]">
                       {t.adminDashboard.name}
                     </th>
-                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[15%]">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[250px]">
                       {t.adminDashboard.email}
                     </th>
-                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[11%]">
-                      {t.adminDashboard.phone}
-                    </th>
-                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[12%]">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[200px]">
                       {t.adminDashboard.company}
                     </th>
-                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[12%]">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
                       {t.adminDashboard.sector}
                     </th>
-                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[8%]">
-                      {t.adminDashboard.employees}
-                    </th>
-                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[20%]">
-                      {t.adminDashboard.message}
-                    </th>
-                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[10%]">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[160px]">
                       {t.adminDashboard.date}
+                    </th>
+                    <th className="px-6 py-4 text-center text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[100px]">
+                      {t.adminDashboard.actions}
                     </th>
                   </tr>
                 </thead>
@@ -200,29 +195,30 @@ export function AdminDashboard() {
                       key={request.id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-900/30 transition-colors"
                     >
-                      <td className="px-4 py-4 text-sm text-gray-900 dark:text-gray-100 truncate">
+                      <td className="px-6 py-5 text-sm text-gray-900 dark:text-gray-100">
                         {request.name}
                       </td>
-                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate" title={request.email}>
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.email}
                       </td>
-                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate">
-                        {request.phone}
-                      </td>
-                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.company}
                       </td>
-                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.sector}
                       </td>
-                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate">
-                        {request.employees}
-                      </td>
-                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate" title={request.message}>
-                        {request.message}
-                      </td>
-                      <td className="px-4 py-4 text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.date}
+                      </td>
+                      <td className="px-6 py-5 text-center">
+                        <Button
+                          onClick={() => setSelectedRequest(request)}
+                          variant="ghost"
+                          size="sm"
+                          className="text-[#3366FF] hover:text-[#3366FF]/80 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                        >
+                          <Info className="w-4 h-4" />
+                        </Button>
                       </td>
                     </tr>
                   ))}
@@ -232,6 +228,131 @@ export function AdminDashboard() {
           </div>
         </div>
       </main>
+
+      {/* Detail Modal */}
+      {selectedRequest && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-2xl text-[#333333] dark:text-white">
+                {t.adminDashboard.requestDetails}
+              </h3>
+              <Button
+                onClick={() => setSelectedRequest(null)}
+                variant="ghost"
+                size="sm"
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 space-y-6">
+              {/* Name */}
+              <div>
+                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t.adminDashboard.name}
+                </label>
+                <p className="mt-1 text-gray-900 dark:text-gray-100">
+                  {selectedRequest.name}
+                </p>
+              </div>
+
+              {/* Email */}
+              <div>
+                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t.adminDashboard.email}
+                </label>
+                <p className="mt-1 text-gray-900 dark:text-gray-100">
+                  <a 
+                    href={`mailto:${selectedRequest.email}`}
+                    className="text-[#3366FF] hover:underline"
+                  >
+                    {selectedRequest.email}
+                  </a>
+                </p>
+              </div>
+
+              {/* Phone */}
+              <div>
+                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t.adminDashboard.phone}
+                </label>
+                <p className="mt-1 text-gray-900 dark:text-gray-100">
+                  <a 
+                    href={`tel:${selectedRequest.phone}`}
+                    className="text-[#3366FF] hover:underline"
+                  >
+                    {selectedRequest.phone}
+                  </a>
+                </p>
+              </div>
+
+              {/* Company */}
+              <div>
+                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t.adminDashboard.company}
+                </label>
+                <p className="mt-1 text-gray-900 dark:text-gray-100">
+                  {selectedRequest.company}
+                </p>
+              </div>
+
+              {/* Sector */}
+              <div>
+                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t.adminDashboard.sector}
+                </label>
+                <p className="mt-1 text-gray-900 dark:text-gray-100">
+                  {selectedRequest.sector}
+                </p>
+              </div>
+
+              {/* Employees */}
+              <div>
+                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t.adminDashboard.employees}
+                </label>
+                <p className="mt-1 text-gray-900 dark:text-gray-100">
+                  {selectedRequest.employees}
+                </p>
+              </div>
+
+              {/* Date */}
+              <div>
+                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t.adminDashboard.date}
+                </label>
+                <p className="mt-1 text-gray-900 dark:text-gray-100">
+                  {selectedRequest.date}
+                </p>
+              </div>
+
+              {/* Message */}
+              <div>
+                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {t.adminDashboard.message}
+                </label>
+                <p className="mt-1 text-gray-900 dark:text-gray-100 whitespace-pre-wrap">
+                  {selectedRequest.message}
+                </p>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-6 border-t border-gray-200 dark:border-gray-700">
+              <Button
+                onClick={() => setSelectedRequest(null)}
+                className="w-full bg-[#3366FF] hover:bg-[#3366FF]/90 text-white py-3 rounded-xl"
+              >
+                {t.adminDashboard.close}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

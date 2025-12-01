@@ -147,6 +147,10 @@ export interface Translations {
     employees: string;
     message: string;
     date: string;
+    actions: string;
+    viewDetails: string;
+    requestDetails: string;
+    close: string;
   };
 
   // Pricing
@@ -410,6 +414,10 @@ export const translations: Record<Language, Translations> = {
       employees: 'Employees',
       message: 'Message',
       date: 'Date',
+      actions: 'Actions',
+      viewDetails: 'View Details',
+      requestDetails: 'Request Details',
+      close: 'Close',
     },
     pricing: {
       title: 'Simple, Transparent Pricing',
@@ -662,6 +670,10 @@ export const translations: Record<Language, Translations> = {
       employees: 'Çalışan Sayısı',
       message: 'Mesaj',
       date: 'Tarih',
+      actions: 'Eylemler',
+      viewDetails: 'Detayları Görüntüle',
+      requestDetails: 'Talep Detayları',
+      close: 'Kapat',
     },
     pricing: {
       title: 'Basit, Şeffaf Fiyatlandırma',
