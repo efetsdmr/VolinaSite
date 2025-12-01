@@ -132,6 +132,23 @@ export interface Translations {
     errorConnection: string;
   };
 
+  // Admin Dashboard
+  adminDashboard: {
+    title: string;
+    logout: string;
+    demoRequests: string;
+    noRequests: string;
+    totalRequests: string;
+    name: string;
+    email: string;
+    phone: string;
+    company: string;
+    sector: string;
+    employees: string;
+    message: string;
+    date: string;
+  };
+
   // Pricing
   pricing: {
     title: string;
@@ -379,6 +396,21 @@ export const translations: Record<Language, Translations> = {
       errorInvalidCredentials: 'Invalid username or password. Please try again.',
       errorConnection: 'Connection error. Please try again later.',
     },
+    adminDashboard: {
+      title: 'Admin Dashboard',
+      logout: 'Logout',
+      demoRequests: 'Demo Requests',
+      noRequests: 'No demo requests yet.',
+      totalRequests: 'Total Requests',
+      name: 'Name',
+      email: 'Email',
+      phone: 'Phone',
+      company: 'Company',
+      sector: 'Sector',
+      employees: 'Employees',
+      message: 'Message',
+      date: 'Date',
+    },
     pricing: {
       title: 'Simple, Transparent Pricing',
       subtitle: 'Choose the plan that fits your business. No hidden fees, cancel anytime.',
@@ -615,6 +647,21 @@ export const translations: Record<Language, Translations> = {
       backToHome: 'Anasayfaya Geri Dön',
       errorInvalidCredentials: 'Geçersiz kullanıcı adı veya şifre. Lütfen tekrar deneyin.',
       errorConnection: 'Bağlantı hatası. Lütfen daha sonra tekrar deneyin.',
+    },
+    adminDashboard: {
+      title: 'Admin Dashboard',
+      logout: 'Çıkış Yap',
+      demoRequests: 'Demo Talepleri',
+      noRequests: 'Henüz demo talebi yok.',
+      totalRequests: 'Toplam Talep',
+      name: 'Ad Soyad',
+      email: 'E-posta',
+      phone: 'Telefon',
+      company: 'Şirket',
+      sector: 'Sektör',
+      employees: 'Çalışan Sayısı',
+      message: 'Mesaj',
+      date: 'Tarih',
     },
     pricing: {
       title: 'Basit, Şeffaf Fiyatlandırma',

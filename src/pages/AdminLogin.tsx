@@ -43,12 +43,8 @@ export function AdminLogin() {
           localStorage.setItem('adminToken', data.token);
         }
         
-        // Redirect to admin dashboard or show success
-        // For now, just log success
-        alert('Login successful!');
-        
-        // You can redirect to a dashboard page here
-        // window.location.href = '/admin/dashboard';
+        // Redirect to admin dashboard
+        window.location.href = '/admin/dashboard';
       } else {
         const errorData = await response.json().catch(() => null);
         setError(errorData?.message || 'Invalid username or password');

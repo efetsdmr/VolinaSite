@@ -4,6 +4,7 @@ import { DarkModeProvider } from './components/DarkModeContext';
 import { LanguageProvider } from './components/LanguageContext';
 import { LandingPage } from './pages/LandingPage';
 import { AdminLogin } from './pages/AdminLogin';
+import { AdminDashboard } from './pages/AdminDashboard';
 
 // Suppress Jotai multiple instance warning - this is a known issue with Radix UI in bundled environments
 if (typeof window !== 'undefined') {
@@ -25,6 +26,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/admin" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
             </Routes>
           </div>
         </DarkModeProvider>
