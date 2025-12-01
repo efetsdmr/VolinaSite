@@ -130,7 +130,7 @@ export function AdminDashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 dark:border-gray-700">
           <div className="flex items-center gap-4">
@@ -165,31 +165,31 @@ export function AdminDashboard() {
                 </p>
               </div>
             ) : (
-              <table className="w-full">
+              <table className="w-full min-w-[1200px]">
                 <thead className="bg-gray-50 dark:bg-gray-900/50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
                       {t.adminDashboard.name}
                     </th>
-                    <th className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[220px]">
                       {t.adminDashboard.email}
                     </th>
-                    <th className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[160px]">
                       {t.adminDashboard.phone}
                     </th>
-                    <th className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
                       {t.adminDashboard.company}
                     </th>
-                    <th className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
                       {t.adminDashboard.sector}
                     </th>
-                    <th className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[120px]">
                       {t.adminDashboard.employees}
                     </th>
-                    <th className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[300px]">
                       {t.adminDashboard.message}
                     </th>
-                    <th className="px-6 py-3 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[160px]">
                       {t.adminDashboard.date}
                     </th>
                   </tr>
@@ -200,28 +200,30 @@ export function AdminDashboard() {
                       key={request.id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-900/30 transition-colors"
                     >
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                      <td className="px-6 py-5 text-sm text-gray-900 dark:text-gray-100">
                         {request.name}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.email}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.phone}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.company}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.sector}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.employees}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600 dark:text-gray-400 max-w-xs truncate">
-                        {request.message}
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="max-w-sm">
+                          {request.message}
+                        </div>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
                         {request.date}
                       </td>
                     </tr>
