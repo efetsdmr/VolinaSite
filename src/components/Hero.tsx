@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Phone, TrendingUp, Target, Menu, Moon, Sun, Globe } from 'lucide-react';
+import { Phone, TrendingUp, Target, Menu, Moon, Sun, Globe, ShieldCheck } from 'lucide-react';
 import { useDarkMode } from './DarkModeContext';
 import { useLanguage } from './LanguageContext';
 import { DemoModal } from './DemoModal';
@@ -54,6 +55,16 @@ export function Hero() {
               <Globe className="w-4 h-4" />
               <span className="text-sm">{language === 'en' ? 'TR' : 'EN'}</span>
             </Button>
+            <Link to="/admin">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="rounded-full"
+                title="Admin"
+              >
+                <ShieldCheck className="w-5 h-5" />
+              </Button>
+            </Link>
           </div>
           <div className="flex md:hidden items-center gap-2">
             <Button 
@@ -73,6 +84,15 @@ export function Hero() {
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
+            <Link to="/admin">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="rounded-full"
+              >
+                <ShieldCheck className="w-5 h-5" />
+              </Button>
+            </Link>
             <Button variant="ghost" size="icon">
               <Menu className="w-6 h-6" />
             </Button>

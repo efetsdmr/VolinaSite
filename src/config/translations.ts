@@ -117,6 +117,21 @@ export interface Translations {
     tryDashboard: string;
   };
 
+  // Admin Login
+  adminLogin: {
+    title: string;
+    subtitle: string;
+    username: string;
+    usernamePlaceholder: string;
+    password: string;
+    passwordPlaceholder: string;
+    signIn: string;
+    signingIn: string;
+    backToHome: string;
+    errorInvalidCredentials: string;
+    errorConnection: string;
+  };
+
   // Pricing
   pricing: {
     title: string;
@@ -351,6 +366,19 @@ export const translations: Record<Language, Translations> = {
       scheduled: 'Meeting Scheduled',
       tryDashboard: 'Try Dashboard',
     },
+    adminLogin: {
+      title: 'Admin Login',
+      subtitle: 'Please enter your credentials to access the admin panel.',
+      username: 'Username',
+      usernamePlaceholder: 'Enter your username',
+      password: 'Password',
+      passwordPlaceholder: 'Enter your password',
+      signIn: 'Sign In',
+      signingIn: 'Signing In...',
+      backToHome: 'Back to Home',
+      errorInvalidCredentials: 'Invalid username or password. Please try again.',
+      errorConnection: 'Connection error. Please try again later.',
+    },
     pricing: {
       title: 'Simple, Transparent Pricing',
       subtitle: 'Choose the plan that fits your business. No hidden fees, cancel anytime.',
@@ -545,7 +573,7 @@ export const translations: Record<Language, Translations> = {
       testimonial1Text: 'Volina AI, potansiyel müşteri yanıt süremizi 4 saatten anında yanıta çıkardı. Dönüşüm oranımız sadece ilk ayda %45 arttı.',
       testimonial1Author: 'FormLab',
       testimonial1Role: 'Beslenme ve Danışmanlık',
-      testimonial2Text: 'Rezervasyon hattımız sürekli meşguldü. Şimdi çok daha fazla rezervasyonu sıfır bekleme süresiyle hallediyoruz.',
+      testimonial2Text: 'Rezervasyon hattımız sürekli meşguldü. Now we handle many more reservations with zero wait time.',
       testimonial2Author: 'L\'Ancora',
       testimonial2Role: 'Balık Restoranı',
       testimonial3Text: 'Artık hiçbir potansiyel hasta kaçmıyor. AI asistan günün her saati arayan müşterileri karşılıyor, sorularını yanıtlıyor ve randevu alıyor.',
@@ -574,6 +602,19 @@ export const translations: Record<Language, Translations> = {
       notInterested: 'İlgilenmiyor',
       scheduled: 'Toplantı Planlandı',
       tryDashboard: 'Paneli Dene',
+    },
+    adminLogin: {
+      title: 'Yönetici Girişi',
+      subtitle: 'Yönetici paneline erişmek için kimlik bilgilerinizi girin.',
+      username: 'Kullanıcı Adı',
+      usernamePlaceholder: 'Kullanıcı adınızı girin',
+      password: 'Şifre',
+      passwordPlaceholder: 'Şifrenizi girin',
+      signIn: 'Giriş Yap',
+      signingIn: 'Giriş Yapılıyor...',
+      backToHome: 'Anasayfaya Geri Dön',
+      errorInvalidCredentials: 'Geçersiz kullanıcı adı veya şifre. Lütfen tekrar deneyin.',
+      errorConnection: 'Bağlantı hatası. Lütfen daha sonra tekrar deneyin.',
     },
     pricing: {
       title: 'Basit, Şeffaf Fiyatlandırma',
