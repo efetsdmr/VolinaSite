@@ -39,6 +39,14 @@ export function Hero() {
             <Button 
               variant="ghost" 
               size="icon" 
+              onClick={toggleDarkMode}
+              className="rounded-full"
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
               onClick={toggleLanguage}
               className="rounded-full flex items-center gap-1.5"
               title={language === 'en' ? 'Türkçe' : 'English'}
