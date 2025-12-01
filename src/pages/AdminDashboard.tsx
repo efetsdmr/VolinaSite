@@ -68,19 +68,29 @@ export function AdminDashboard() {
           
           console.log('Messages found:', messages.length);
           
-          const transformedData: DemoRequest[] = messages.map((item: any, index: number) => ({
-            id: item.id || index + 1,
-            name: item.name || item.full_name || 'N/A',
-            email: item.email || 'N/A',
-            phone: item.phone || item.phone_number || 'N/A',
-            company: item.company || item.company_name || 'N/A',
-            sector: item.sector || item.industry || 'N/A',
-            employees: item.employees || item.employee_count || 'N/A',
-            message: item.message || item.content || item.description || 'N/A',
-            date: item.created_at 
-              ? new Date(item.created_at).toLocaleString(language === 'tr' ? 'tr-TR' : 'en-US')
-              : item.date || 'N/A'
-          }));
+          const transformedData: DemoRequest[] = messages.map((item: any, index: number) => {
+            // Parse date and add 3 hours for Turkey timezone (UTC+3)
+            let formattedDate = 'N/A';
+            if (item.created_at) {
+              const date = new Date(item.created_at);
+              date.setHours(date.getHours() + 3); // Add 3 hours
+              formattedDate = date.toLocaleString(language === 'tr' ? 'tr-TR' : 'en-US');
+            } else if (item.date) {
+              formattedDate = item.date;
+            }
+
+            return {
+              id: item.id || index + 1,
+              name: item.name || item.full_name || 'N/A',
+              email: item.email || 'N/A',
+              phone: item.phone || item.phone_number || 'N/A',
+              company: item.company || item.company_name || 'N/A',
+              sector: item.business_type || item.sector || item.industry || 'N/A',
+              employees: item.employees || item.employee_count || 'N/A',
+              message: item.message || item.content || item.description || 'N/A',
+              date: formattedDate
+            };
+          });
           
           setDemoRequests(transformedData);
         } else if (response.status === 401) {
