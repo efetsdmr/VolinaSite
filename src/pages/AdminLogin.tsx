@@ -69,15 +69,9 @@ export function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 transition-colors duration-300 px-4 relative overflow-hidden">
-      {/* Subtle Gradient Overlay - matching main page */}
+      {/* Subtle Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-950/5 via-transparent to-purple-950/5 dark:from-blue-950/20 dark:via-transparent dark:to-purple-950/20"></div>
       
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-20 dark:opacity-10 pointer-events-none">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-blue-100 via-purple-50 to-transparent dark:from-blue-900 dark:via-purple-900"></div>
-        <div className="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-tr from-purple-100 via-blue-50 to-transparent dark:from-purple-900 dark:via-blue-900"></div>
-      </div>
-
       {/* Login Card */}
       <div className="relative w-full max-w-md z-10">
         <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-8 sm:p-12 border border-gray-100 dark:border-gray-700">
