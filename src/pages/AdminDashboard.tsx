@@ -130,7 +130,7 @@ export function AdminDashboard() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats Card */}
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 dark:border-gray-700">
           <div className="flex items-center gap-4">
@@ -165,31 +165,31 @@ export function AdminDashboard() {
                 </p>
               </div>
             ) : (
-              <table className="w-full min-w-[1200px]">
+              <table className="w-full table-fixed">
                 <thead className="bg-gray-50 dark:bg-gray-900/50">
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
+                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[12%]">
                       {t.adminDashboard.name}
                     </th>
-                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[220px]">
+                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[15%]">
                       {t.adminDashboard.email}
                     </th>
-                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[160px]">
+                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[11%]">
                       {t.adminDashboard.phone}
                     </th>
-                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
+                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[12%]">
                       {t.adminDashboard.company}
                     </th>
-                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[180px]">
+                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[12%]">
                       {t.adminDashboard.sector}
                     </th>
-                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[120px]">
+                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[8%]">
                       {t.adminDashboard.employees}
                     </th>
-                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[300px]">
+                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[20%]">
                       {t.adminDashboard.message}
                     </th>
-                    <th className="px-6 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider min-w-[160px]">
+                    <th className="px-4 py-4 text-left text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider w-[10%]">
                       {t.adminDashboard.date}
                     </th>
                   </tr>
@@ -200,30 +200,28 @@ export function AdminDashboard() {
                       key={request.id}
                       className="hover:bg-gray-50 dark:hover:bg-gray-900/30 transition-colors"
                     >
-                      <td className="px-6 py-5 text-sm text-gray-900 dark:text-gray-100">
+                      <td className="px-4 py-4 text-sm text-gray-900 dark:text-gray-100 truncate">
                         {request.name}
                       </td>
-                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate" title={request.email}>
                         {request.email}
                       </td>
-                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate">
                         {request.phone}
                       </td>
-                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate">
                         {request.company}
                       </td>
-                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate">
                         {request.sector}
                       </td>
-                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate">
                         {request.employees}
                       </td>
-                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
-                        <div className="max-w-sm">
-                          {request.message}
-                        </div>
+                      <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400 truncate" title={request.message}>
+                        {request.message}
                       </td>
-                      <td className="px-6 py-5 text-sm text-gray-600 dark:text-gray-400">
+                      <td className="px-4 py-4 text-xs text-gray-600 dark:text-gray-400 whitespace-nowrap">
                         {request.date}
                       </td>
                     </tr>
