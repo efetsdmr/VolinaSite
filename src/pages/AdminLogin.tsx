@@ -38,9 +38,14 @@ export function AdminLogin() {
         const data = await response.json();
         console.log('Login successful:', data);
         
-        // Store auth token or user data if provided
-        if (data.token) {
-          localStorage.setItem('adminToken', data.token);
+        // Store auth token - try different possible field names
+        const token = data.token || data.access_token || data.jwt || data.accessToken;
+        
+        if (token) {
+          localStorage.setItem('adminToken', token);
+          console.log('Token stored successfully:', token.substring(0, 20) + '...');
+        } else {
+          console.warn('No token found in response:', data);
         }
         
         // Redirect to admin dashboard

@@ -30,8 +30,11 @@ export function AdminDashboard() {
     const fetchDemoRequests = async () => {
       const token = localStorage.getItem('adminToken');
       
+      console.log('Dashboard mounted, checking token:', token ? 'Token found' : 'No token');
+      
       // If no token, redirect to login
       if (!token) {
+        console.log('No token found, redirecting to login...');
         window.location.href = '/admin';
         return;
       }
@@ -39,6 +42,8 @@ export function AdminDashboard() {
       try {
         setIsLoading(true);
         setError('');
+        
+        console.log('Fetching messages with token...');
         
         const response = await fetch(
           'https://ahudio-site-backend.onrender.com/messages/?page_number=1&page_size=100',
@@ -51,6 +56,8 @@ export function AdminDashboard() {
           }
         );
 
+        console.log('API Response status:', response.status);
+
         if (response.ok) {
           const data = await response.json();
           console.log('API Response:', data);
@@ -58,6 +65,8 @@ export function AdminDashboard() {
           // Transform API data to match our interface
           // API might return data in different formats, adjust accordingly
           const messages = Array.isArray(data) ? data : data.messages || data.items || [];
+          
+          console.log('Messages found:', messages.length);
           
           const transformedData: DemoRequest[] = messages.map((item: any, index: number) => ({
             id: item.id || index + 1,
@@ -78,6 +87,7 @@ export function AdminDashboard() {
           // Unauthorized - token expired or invalid
           console.error('Unauthorized: Token expired or invalid');
           localStorage.removeItem('adminToken');
+          alert('Session expired. Please login again.');
           window.location.href = '/admin';
         } else {
           const errorText = await response.text();
