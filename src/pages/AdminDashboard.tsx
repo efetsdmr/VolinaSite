@@ -22,46 +22,78 @@ export function AdminDashboard() {
   const { language, setLanguage, t } = useLanguage();
   const [demoRequests, setDemoRequests] = useState<DemoRequest[]>([]);
   const [selectedRequest, setSelectedRequest] = useState<DemoRequest | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  // Mock data - Replace with actual API call
+  // Fetch demo requests from API
   useEffect(() => {
-    const mockData: DemoRequest[] = [
-      {
-        id: 1,
-        name: 'Ahmet Yılmaz',
-        email: 'ahmet@formlab.com.tr',
-        phone: '+90 532 123 4567',
-        company: 'FormLab',
-        sector: 'Nutrition and Consulting',
-        employees: '10-50',
-        message: 'We need an AI voice solution for customer support',
-        date: '2024-12-01 14:30'
-      },
-      {
-        id: 2,
-        name: 'Ayşe Demir',
-        email: 'ayse@lancora.com.tr',
-        phone: '+90 533 987 6543',
-        company: 'L\'Ancora Restaurant',
-        sector: 'Restaurant',
-        employees: '1-10',
-        message: 'Looking for reservation automation',
-        date: '2024-12-01 10:15'
-      },
-      {
-        id: 3,
-        name: 'Mehmet Kaya',
-        email: 'mehmet@smileholiday.com.tr',
-        phone: '+90 534 456 7890',
-        company: 'Smile and Holiday Dental',
-        sector: 'Dental',
-        employees: '10-50',
-        message: 'Patient appointment scheduling automation needed',
-        date: '2024-11-30 16:45'
+    const fetchDemoRequests = async () => {
+      const token = localStorage.getItem('adminToken');
+      
+      // If no token, redirect to login
+      if (!token) {
+        window.location.href = '/admin';
+        return;
       }
-    ];
-    setDemoRequests(mockData);
-  }, []);
+
+      try {
+        setIsLoading(true);
+        setError('');
+        
+        const response = await fetch(
+          'https://ahudio-site-backend.onrender.com/messages/?page_number=1&page_size=100',
+          {
+            method: 'GET',
+            headers: {
+              'accept': 'application/json',
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('API Response:', data);
+          
+          // Transform API data to match our interface
+          // API might return data in different formats, adjust accordingly
+          const messages = Array.isArray(data) ? data : data.messages || data.items || [];
+          
+          const transformedData: DemoRequest[] = messages.map((item: any, index: number) => ({
+            id: item.id || index + 1,
+            name: item.name || item.full_name || 'N/A',
+            email: item.email || 'N/A',
+            phone: item.phone || item.phone_number || 'N/A',
+            company: item.company || item.company_name || 'N/A',
+            sector: item.sector || item.industry || 'N/A',
+            employees: item.employees || item.employee_count || 'N/A',
+            message: item.message || item.content || item.description || 'N/A',
+            date: item.created_at 
+              ? new Date(item.created_at).toLocaleString(language === 'tr' ? 'tr-TR' : 'en-US')
+              : item.date || 'N/A'
+          }));
+          
+          setDemoRequests(transformedData);
+        } else if (response.status === 401) {
+          // Unauthorized - token expired or invalid
+          console.error('Unauthorized: Token expired or invalid');
+          localStorage.removeItem('adminToken');
+          window.location.href = '/admin';
+        } else {
+          const errorText = await response.text();
+          console.error('API Error:', response.status, errorText);
+          setError(`Failed to load demo requests (${response.status})`);
+        }
+      } catch (err) {
+        console.error('Error fetching demo requests:', err);
+        setError('Connection error. Please check your internet connection.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDemoRequests();
+  }, [language]);
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
@@ -158,7 +190,21 @@ export function AdminDashboard() {
           </div>
 
           <div className="overflow-x-auto">
-            {demoRequests.length === 0 ? (
+            {isLoading ? (
+              <div className="text-center py-12">
+                <Users className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">
+                  {t.adminDashboard.loading}
+                </p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <Users className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+                <p className="text-gray-500 dark:text-gray-400">
+                  {error}
+                </p>
+              </div>
+            ) : demoRequests.length === 0 ? (
               <div className="text-center py-12">
                 <Users className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
                 <p className="text-gray-500 dark:text-gray-400">

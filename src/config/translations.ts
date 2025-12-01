@@ -151,6 +151,7 @@ export interface Translations {
     viewDetails: string;
     requestDetails: string;
     close: string;
+    loading: string;
   };
 
   // Pricing
@@ -418,6 +419,7 @@ export const translations: Record<Language, Translations> = {
       viewDetails: 'View Details',
       requestDetails: 'Request Details',
       close: 'Close',
+      loading: 'Loading...',
     },
     pricing: {
       title: 'Simple, Transparent Pricing',
@@ -674,6 +676,7 @@ export const translations: Record<Language, Translations> = {
       viewDetails: 'Detayları Görüntüle',
       requestDetails: 'Talep Detayları',
       close: 'Kapat',
+      loading: 'Yükleniyor...',
     },
     pricing: {
       title: 'Basit, Şeffaf Fiyatlandırma',
