@@ -144,7 +144,6 @@ export interface Translations {
     phone: string;
     company: string;
     sector: string;
-    employees: string;
     message: string;
     date: string;
     actions: string;
@@ -245,7 +244,6 @@ export interface Translations {
     demoSectorRestaurant: string;
     demoSectorEcommerce: string;
     demoSectorOther: string;
-    demoEmployees: string;
     demoMessage: string;
     demoMessagePlaceholder: string;
     demoSubmit: string;
@@ -412,7 +410,6 @@ export const translations: Record<Language, Translations> = {
       phone: 'Phone',
       company: 'Company',
       sector: 'Sector',
-      employees: 'Employees',
       message: 'Message',
       date: 'Date',
       actions: 'Actions',
@@ -506,7 +503,6 @@ export const translations: Record<Language, Translations> = {
       demoSectorRestaurant: 'Restaurant',
       demoSectorEcommerce: 'E-commerce',
       demoSectorOther: 'Other',
-      demoEmployees: 'Number of Employees',
       demoMessage: 'Tell us about your needs',
       demoMessagePlaceholder: 'Tell us about your use case...',
       demoSubmit: 'Schedule Demo',
@@ -669,7 +665,6 @@ export const translations: Record<Language, Translations> = {
       phone: 'Telefon',
       company: 'Şirket',
       sector: 'Sektör',
-      employees: 'Çalışan Sayısı',
       message: 'Mesaj',
       date: 'Tarih',
       actions: 'Eylemler',
@@ -763,7 +758,6 @@ export const translations: Record<Language, Translations> = {
       demoSectorRestaurant: 'Restoran',
       demoSectorEcommerce: 'E-ticaret',
       demoSectorOther: 'Diğer',
-      demoEmployees: 'Çalışan Sayısı',
       demoMessage: 'İhtiyaçlarınızı anlatın',
       demoMessagePlaceholder: 'Kullanım senaryonuzu anlatın...',
       demoSubmit: 'Demo Planla',

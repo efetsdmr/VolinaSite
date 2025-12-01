@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Phone, TrendingUp, Target, Menu, Moon, Sun, Globe, ShieldCheck } from 'lucide-react';
+import { Phone, TrendingUp, Target, Menu, Moon, Sun, Globe } from 'lucide-react';
 import { useDarkMode } from './DarkModeContext';
 import { useLanguage } from './LanguageContext';
 import { DemoModal } from './DemoModal';
@@ -19,19 +18,16 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-950/30 dark:to-purple-950/30 transition-colors duration-300">
-      {/* Background Pattern - Simplified */}
-      <div className="absolute inset-0 opacity-20 dark:opacity-10">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-blue-100 via-purple-50 to-transparent dark:from-blue-900 dark:via-purple-900"></div>
-        <div className="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-tr from-purple-100 via-blue-50 to-transparent dark:from-purple-900 dark:via-blue-900"></div>
-      </div>
+    <section className="relative overflow-hidden bg-white dark:bg-gray-900 transition-colors duration-300">
+      {/* Subtle Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-950/5 via-transparent to-purple-950/5 dark:from-blue-950/20 dark:via-transparent dark:to-purple-950/20"></div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         {/* Navigation */}
         <nav className="flex items-center justify-between py-4 sm:py-6">
           <div className="flex items-center gap-2 sm:gap-3 -ml-2 sm:-ml-4">
             <img src={volinaLogo} alt="Volina AI Logo" className="w-8 h-8 sm:w-10 sm:h-10" />
-            <span className="text-lg sm:text-xl text-[#333333] dark:text-white">Volina AI</span>
+            <span className="text-xl sm:text-2xl text-[#333333] dark:text-white">Volina AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a href="#solutions" className="text-[#333333] dark:text-gray-300 hover:text-[#3366FF] dark:hover:text-[#3366FF] transition-colors">{t.nav.solutions}</a>
@@ -55,16 +51,6 @@ export function Hero() {
               <Globe className="w-4 h-4" />
               <span className="text-sm">{language === 'en' ? 'TR' : 'EN'}</span>
             </Button>
-            <Link to="/admin">
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="rounded-full"
-                title="Admin"
-              >
-                <ShieldCheck className="w-5 h-5" />
-              </Button>
-            </Link>
           </div>
           <div className="flex md:hidden items-center gap-2">
             <Button 
@@ -84,15 +70,6 @@ export function Hero() {
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
-            <Link to="/admin">
-              <Button 
-                variant="ghost" 
-                size="icon"
-                className="rounded-full"
-              >
-                <ShieldCheck className="w-5 h-5" />
-              </Button>
-            </Link>
             <Button variant="ghost" size="icon">
               <Menu className="w-6 h-6" />
             </Button>

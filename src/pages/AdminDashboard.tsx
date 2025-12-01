@@ -12,7 +12,6 @@ interface DemoRequest {
   phone: string;
   company: string;
   sector: string;
-  employees: string;
   message: string;
   date: string;
 }
@@ -86,7 +85,6 @@ export function AdminDashboard() {
               phone: item.phone || item.phone_number || 'N/A',
               company: item.company || item.company_name || 'N/A',
               sector: item.business_type || item.sector || item.industry || 'N/A',
-              employees: item.employees || item.employee_count || 'N/A',
               message: item.message || item.content || item.description || 'N/A',
               date: formattedDate
             };
@@ -373,16 +371,6 @@ export function AdminDashboard() {
                 </label>
                 <p className="mt-1 text-gray-900 dark:text-gray-100">
                   {selectedRequest.sector}
-                </p>
-              </div>
-
-              {/* Employees */}
-              <div>
-                <label className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  {t.adminDashboard.employees}
-                </label>
-                <p className="mt-1 text-gray-900 dark:text-gray-100">
-                  {selectedRequest.employees}
                 </p>
               </div>
 
