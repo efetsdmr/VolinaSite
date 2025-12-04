@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Phone, TrendingUp, Target, Menu, Moon, Sun, Globe, Shield } from 'lucide-react';
+import { Phone, TrendingUp, Target, Menu, Moon, Sun, Globe, User } from 'lucide-react';
 import { useDarkMode } from './DarkModeContext';
 import { useLanguage } from './LanguageContext';
 import { DemoModal } from './DemoModal';
@@ -56,11 +56,11 @@ export function Hero() {
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={() => navigate('/admin')}
+              onClick={() => navigate('/login')}
               className="rounded-full"
               title="Admin Panel"
             >
-              <Shield className="w-5 h-5" />
+              <User className="w-5 h-5" />
             </Button>
           </div>
           <div className="flex md:hidden items-center gap-2">
@@ -76,10 +76,10 @@ export function Hero() {
             <Button 
               variant="ghost" 
               size="icon" 
-              onClick={() => navigate('/admin')}
+              onClick={() => navigate('/login')}
               className="rounded-full"
             >
-              <Shield className="w-4 h-4" />
+              <User className="w-4 h-4" />
             </Button>
             <Button 
               variant="ghost" 

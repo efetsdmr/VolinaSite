@@ -139,6 +139,12 @@ export interface Translations {
     demoRequests: string;
     noRequests: string;
     totalRequests: string;
+    totalCalls: string;
+    avgDuration: string;
+    totalCost: string;
+    avgCost: string;
+    callSuccess: string;
+    chartTitle: string;
     name: string;
     email: string;
     phone: string;
@@ -405,6 +411,12 @@ export const translations: Record<Language, Translations> = {
       demoRequests: 'Demo Requests',
       noRequests: 'No demo requests yet.',
       totalRequests: 'Total Requests',
+      totalCalls: 'Total Calls',
+      avgDuration: 'Avg Duration',
+      totalCost: 'Total Cost',
+      avgCost: 'Avg Cost',
+      callSuccess: 'Call Success',
+      chartTitle: 'Call Performance',
       name: 'Name',
       email: 'Email',
       phone: 'Phone',
@@ -660,6 +672,12 @@ export const translations: Record<Language, Translations> = {
       demoRequests: 'Demo Talepleri',
       noRequests: 'Henüz demo talebi yok.',
       totalRequests: 'Toplam Talep',
+      totalCalls: 'Toplam Çağrı',
+      avgDuration: 'Ort. Süre',
+      totalCost: 'Toplam Maliyet',
+      avgCost: 'Ort. Maliyet',
+      callSuccess: 'Çağrı Başarı',
+      chartTitle: 'Çağrı Performansı',
       name: 'Ad Soyad',
       email: 'E-posta',
       phone: 'Telefon',

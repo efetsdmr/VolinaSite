@@ -49,7 +49,7 @@ export function AdminLogin() {
         }
         
         // Redirect to admin dashboard
-        window.location.href = '/admin/dashboard';
+        window.location.href = '/dashboard';
       } else {
         const errorData = await response.json().catch(() => null);
         setError(errorData?.message || 'Invalid username or password');

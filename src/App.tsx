@@ -25,8 +25,8 @@ export default function App() {
           <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-300">
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/admin" element={<AdminLogin />} />
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/login" element={<AdminLogin />} />
+              <Route path="/dashboard" element={<AdminDashboard />} />
             </Routes>
           </div>
         </DarkModeProvider>
