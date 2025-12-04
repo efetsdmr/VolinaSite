@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Phone, TrendingUp, Target, Menu, Moon, Sun, Globe } from 'lucide-react';
+import { Phone, TrendingUp, Target, Menu, Moon, Sun, Globe, Shield } from 'lucide-react';
 import { useDarkMode } from './DarkModeContext';
 import { useLanguage } from './LanguageContext';
 import { DemoModal } from './DemoModal';
@@ -8,6 +9,7 @@ import { TryVolinaModal } from './TryVolinaModal';
 import volinaLogo from '../assets/volina-logo.svg';
 
 export function Hero() {
+  const navigate = useNavigate();
   const { isDarkMode, toggleDarkMode } = useDarkMode();
   const { language, setLanguage, t } = useLanguage();
   const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
@@ -51,6 +53,15 @@ export function Hero() {
               <Globe className="w-4 h-4" />
               <span className="text-sm">{language === 'en' ? 'TR' : 'EN'}</span>
             </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => navigate('/admin')}
+              className="rounded-full"
+              title="Admin Panel"
+            >
+              <Shield className="w-5 h-5" />
+            </Button>
           </div>
           <div className="flex md:hidden items-center gap-2">
             <Button 
@@ -61,6 +72,14 @@ export function Hero() {
             >
               <Globe className="w-3.5 h-3.5" />
               <span className="text-xs">{language === 'en' ? 'TR' : 'EN'}</span>
+            </Button>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => navigate('/admin')}
+              className="rounded-full"
+            >
+              <Shield className="w-4 h-4" />
             </Button>
             <Button 
               variant="ghost" 
