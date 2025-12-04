@@ -604,27 +604,55 @@ export function AdminDashboard() {
               </div>
 
               {/* Chart */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 border border-gray-100 dark:border-gray-700 mt-8">
-                <h3 className="text-2xl text-[#333333] dark:text-white mb-4">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-3 sm:p-6 border border-gray-100 dark:border-gray-700 mt-6">
+                <h3 className="text-lg sm:text-xl lg:text-2xl text-[#333333] dark:text-white mb-3 sm:mb-4">
                   {t.adminDashboard.chartTitle}
                 </h3>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart
-                    data={chartData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line type="monotone" dataKey="value" stroke="#3366FF" activeDot={{ r: 8 }} />
-                  </LineChart>
-                </ResponsiveContainer>
+                <div className="w-full overflow-x-auto -mx-3 sm:mx-0">
+                  <div className="min-w-[280px] px-3 sm:px-0">
+                    <ResponsiveContainer width="100%" height={180} className="sm:!h-[220px] lg:!h-[250px]">
+                      <LineChart
+                        data={chartData}
+                        margin={{
+                          top: 5,
+                          right: 5,
+                          left: -25,
+                          bottom: 0
+                        }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? '#374151' : '#e5e7eb'} />
+                        <XAxis 
+                          dataKey="date" 
+                          tick={{ fontSize: 10 }}
+                          stroke={isDarkMode ? '#9CA3AF' : '#6B7280'}
+                          interval="preserveStartEnd"
+                        />
+                        <YAxis 
+                          tick={{ fontSize: 10 }}
+                          stroke={isDarkMode ? '#9CA3AF' : '#6B7280'}
+                          width={30}
+                        />
+                        <Tooltip 
+                          contentStyle={{
+                            backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                            border: `1px solid ${isDarkMode ? '#374151' : '#E5E7EB'}`,
+                            borderRadius: '8px',
+                            color: isDarkMode ? '#F3F4F6' : '#111827',
+                            fontSize: '12px'
+                          }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="value" 
+                          stroke="#3366FF" 
+                          strokeWidth={2}
+                          activeDot={{ r: 5 }} 
+                          dot={{ r: 2 }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
               </div>
             </div>
           )}
