@@ -24,7 +24,7 @@ export function AdminDashboard() {
   const [selectedRequest, setSelectedRequest] = useState<DemoRequest | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
-  const [activeTab, setActiveTab] = useState('demo-requests');
+  const [activeTab, setActiveTab] = useState('dashboard');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedAssistant, setSelectedAssistant] = useState('all');
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
