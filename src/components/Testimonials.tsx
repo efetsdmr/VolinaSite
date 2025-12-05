@@ -3,12 +3,14 @@ import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './ui/button';
 import { useLanguage } from './LanguageContext';
 import { TryVolinaModal } from './TryVolinaModal';
+import { vapiConfig } from '../config/vapi.config';
 
 export function Testimonials() {
   const { t } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [isTryModalOpen, setIsTryModalOpen] = useState(false);
+  const [selectedWorkflowId, setSelectedWorkflowId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,19 +33,22 @@ export function Testimonials() {
       quote: t.testimonials.testimonial1Text,
       author: t.testimonials.testimonial1Author,
       role: t.testimonials.testimonial1Role,
-      showButton: true
+      showButton: true,
+      workflowId: undefined // Uses default assistantId
     },
     {
       quote: t.testimonials.testimonial2Text,
       author: t.testimonials.testimonial2Author,
       role: t.testimonials.testimonial2Role,
-      showButton: true
+      showButton: true,
+      workflowId: undefined // Uses default assistantId
     },
     {
       quote: t.testimonials.testimonial3Text,
       author: t.testimonials.testimonial3Author,
       role: t.testimonials.testimonial3Role,
-      showButton: true
+      showButton: true,
+      workflowId: vapiConfig.smilelineWorkflowId // Smile and Holiday uses special workflow
     }
   ];
 
@@ -94,7 +99,10 @@ export function Testimonials() {
                 
                 {testimonial.showButton && (
                   <button 
-                    onClick={() => setIsTryModalOpen(true)}
+                    onClick={() => {
+                      setIsTryModalOpen(true);
+                      setSelectedWorkflowId(testimonial.workflowId);
+                    }}
                     className="mt-4 w-full px-4 py-2.5 bg-gradient-to-r from-[#3366FF] to-[#8C51FF] text-white rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
                   >
                     {t.testimonials.tryModel}
@@ -134,7 +142,7 @@ export function Testimonials() {
       </div>
 
       {/* Try Volina Modal */}
-      <TryVolinaModal isOpen={isTryModalOpen} onClose={() => setIsTryModalOpen(false)} />
+      <TryVolinaModal isOpen={isTryModalOpen} onClose={() => setIsTryModalOpen(false)} workflowId={selectedWorkflowId} />
     </section>
   );
 }
