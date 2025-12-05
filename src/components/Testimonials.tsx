@@ -4,13 +4,17 @@ import { Button } from './ui/button';
 import { useLanguage } from './LanguageContext';
 import { TryVolinaModal } from './TryVolinaModal';
 import { vapiConfig } from '../config/vapi.config';
+import { motion, AnimatePresence } from 'motion/react';
 
 export function Testimonials() {
   const { t } = useLanguage();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0); // 1 for next, -1 for previous
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [isTryModalOpen, setIsTryModalOpen] = useState(false);
   const [selectedWorkflowId, setSelectedWorkflowId] = useState<string | undefined>(undefined);
+  const [maxHeight, setMaxHeight] = useState<number>(0);
+  const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -37,11 +41,11 @@ export function Testimonials() {
       workflowId: undefined // Uses default assistantId
     },
     {
-      quote: t.testimonials.testimonial2Text,
-      author: t.testimonials.testimonial2Author,
-      role: t.testimonials.testimonial2Role,
+      quote: t.testimonials.testimonial4Text,
+      author: t.testimonials.testimonial4Author,
+      role: t.testimonials.testimonial4Role,
       showButton: true,
-      workflowId: undefined // Uses default assistantId
+      workflowId: vapiConfig.latifeMeyhaneWorkflowId // Latife Meyhane Bestekar uses special workflow
     },
     {
       quote: t.testimonials.testimonial3Text,
@@ -49,20 +53,68 @@ export function Testimonials() {
       role: t.testimonials.testimonial3Role,
       showButton: true,
       workflowId: vapiConfig.smilelineWorkflowId // Smile and Holiday uses special workflow
+    },
+    {
+      quote: t.testimonials.testimonial2Text,
+      author: t.testimonials.testimonial2Author,
+      role: t.testimonials.testimonial2Role,
+      showButton: true,
+      workflowId: undefined // Uses default assistantId - L'Ancora
     }
   ];
 
-  const maxIndex = Math.max(0, testimonials.length - itemsPerPage);
+  // Calculate max height after all cards are rendered
+  useEffect(() => {
+    const calculateMaxHeight = () => {
+      const heights = cardRefs.current
+        .filter(ref => ref !== null)
+        .map(ref => ref!.offsetHeight);
+      
+      if (heights.length > 0) {
+        const max = Math.max(...heights);
+        setMaxHeight(max);
+      }
+    };
+
+    // Wait for DOM to render
+    setTimeout(calculateMaxHeight, 100);
+    
+    // Recalculate on window resize
+    window.addEventListener('resize', calculateMaxHeight);
+    return () => window.removeEventListener('resize', calculateMaxHeight);
+  }, [t, itemsPerPage]); // Recalculate when language or items per page changes
+
+  // Auto-rotate testimonials every 10 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+      setDirection(1);
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  }, [testimonials.length, currentIndex]); // Reset timer when currentIndex changes
 
   const goToPrevious = () => {
-    setCurrentIndex((prev) => Math.max(0, prev - 1));
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+    setDirection(-1);
   };
 
   const goToNext = () => {
-    setCurrentIndex((prev) => Math.min(maxIndex, prev + 1));
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    setDirection(1);
   };
 
-  const visibleTestimonials = testimonials.slice(currentIndex, currentIndex + itemsPerPage);
+  // Calculate which testimonials to show based on current index
+  const getVisibleTestimonials = () => {
+    const visible = [];
+    for (let i = 0; i < itemsPerPage; i++) {
+      const index = (currentIndex + i) % testimonials.length;
+      visible.push(testimonials[index]);
+    }
+    return visible;
+  };
+
+  const visibleTestimonials = getVisibleTestimonials();
 
   return (
     <section id="case-studies" className="py-16 sm:py-20 lg:py-32 bg-gray-50 dark:bg-gray-800">
@@ -79,65 +131,102 @@ export function Testimonials() {
           </p>
         </div>
 
-        <div className="relative">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {visibleTestimonials.map((testimonial, index) => (
-              <div 
-                key={currentIndex + index}
-                className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col"
-              >
-                <Quote className="w-10 h-10 sm:w-12 sm:h-12 text-[#3366FF] mb-4 sm:mb-6" />
-                
-                <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 leading-relaxed">
-                  "{testimonial.quote}"
-                </p>
+        {/* Hidden cards for height calculation */}
+        <div className="invisible absolute pointer-events-none w-full">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-12">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+              {testimonials.map((testimonial, index) => (
+                <div 
+                  key={`hidden-${index}`}
+                  ref={el => cardRefs.current[index] = el}
+                  className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col"
+                >
+                  <Quote className="w-10 h-10 sm:w-12 sm:h-12 text-[#3366FF] mb-4 sm:mb-6" />
+                  
+                  <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 leading-relaxed">
+                    "{testimonial.quote}"
+                  </p>
 
-                <div className="mt-auto">
-                  <div className="text-base sm:text-lg text-[#333333] dark:text-white">{testimonial.author}</div>
-                  <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</div>
+                  <div className="mt-auto">
+                    <div className="text-base sm:text-lg text-[#333333] dark:text-white">{testimonial.author}</div>
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</div>
+                  </div>
+                  
+                  {testimonial.showButton && (
+                    <button 
+                      className="mt-4 w-full px-4 py-2.5 bg-gradient-to-r from-[#3366FF] to-[#8C51FF] text-white rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
+                    >
+                      {t.testimonials.tryModel}
+                    </button>
+                  )}
                 </div>
-                
-                {testimonial.showButton && (
-                  <button 
-                    onClick={() => {
-                      setIsTryModalOpen(true);
-                      setSelectedWorkflowId(testimonial.workflowId);
-                    }}
-                    className="mt-4 w-full px-4 py-2.5 bg-gradient-to-r from-[#3366FF] to-[#8C51FF] text-white rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
-                  >
-                    {t.testimonials.tryModel}
-                  </button>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+        </div>
+
+        <div className="relative overflow-hidden">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div 
+              key={currentIndex}
+              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+              initial={{ opacity: 0, x: direction * 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -direction * 50 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
+            >
+              {visibleTestimonials.map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="bg-white dark:bg-gray-900 rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col"
+                  style={{ minHeight: maxHeight > 0 ? `${maxHeight}px` : 'auto' }}
+                >
+                  <Quote className="w-10 h-10 sm:w-12 sm:h-12 text-[#3366FF] mb-4 sm:mb-6" />
+                  
+                  <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 leading-relaxed">
+                    "{testimonial.quote}"
+                  </p>
+
+                  <div className="mt-auto">
+                    <div className="text-base sm:text-lg text-[#333333] dark:text-white">{testimonial.author}</div>
+                    <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{testimonial.role}</div>
+                  </div>
+                  
+                  {testimonial.showButton && (
+                    <button 
+                      onClick={() => {
+                        setIsTryModalOpen(true);
+                        setSelectedWorkflowId(testimonial.workflowId);
+                      }}
+                      className="mt-4 w-full px-4 py-2.5 bg-gradient-to-r from-[#3366FF] to-[#8C51FF] text-white rounded-lg hover:opacity-90 transition-opacity text-sm sm:text-base"
+                    >
+                      {t.testimonials.tryModel}
+                    </button>
+                  )}
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
 
           {/* Navigation Arrows */}
-          {testimonials.length > itemsPerPage && (
-            <div className="flex items-center justify-center gap-4 mt-8 sm:mt-12">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={goToPrevious}
-                disabled={currentIndex === 0}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full"
-              >
-                <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-              </Button>
-              <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
-                {currentIndex + 1} / {maxIndex + 1}
-              </div>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={goToNext}
-                disabled={currentIndex >= maxIndex}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full"
-              >
-                <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-              </Button>
-            </div>
-          )}
+          <div className="flex items-center justify-center gap-4 mt-8 sm:mt-12">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={goToPrevious}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full"
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={goToNext}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full"
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </Button>
+          </div>
         </div>
       </div>
 

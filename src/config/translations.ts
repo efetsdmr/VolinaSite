@@ -90,6 +90,9 @@ export interface Translations {
     testimonial3Text: string;
     testimonial3Author: string;
     testimonial3Role: string;
+    testimonial4Text: string;
+    testimonial4Author: string;
+    testimonial4Role: string;
     tryModel: string;
   };
 
@@ -368,6 +371,9 @@ export const translations: Record<Language, Translations> = {
       testimonial3Text: 'No potential patient is missed anymore. The AI assistant greets customers who call at any time of day, answers their questions, and books appointments.',
       testimonial3Author: 'Smile and Holiday',
       testimonial3Role: 'Dental Clinic',
+      testimonial4Text: 'We receive approximately 500 reservation requests per month. Volina AI handles them all seamlessly, and our customers are delighted with the instant service.',
+      testimonial4Author: 'Latife Meyhane Bestekar',
+      testimonial4Role: 'Traditional Turkish Tavern',
       tryModel: 'Try the Model',
     },
     adminPanel: {
@@ -623,12 +629,15 @@ export const translations: Record<Language, Translations> = {
       testimonial1Text: 'Volina AI, potansiyel müşteri yanıt süremizi 4 saatten anında yanıta çıkardı. Dönüşüm oranımız sadece ilk ayda %45 arttı.',
       testimonial1Author: 'FormLab',
       testimonial1Role: 'Beslenme ve Danışmanlık',
-      testimonial2Text: 'Rezervasyon hattımız sürekli meşguldü. Now we handle many more reservations with zero wait time.',
+      testimonial2Text: 'Rezervasyon hattımız sürekli meşguldü. Şimdi sıfır bekleme süresiyle çok daha fazla rezervasyon işliyoruz.',
       testimonial2Author: 'L\'Ancora',
       testimonial2Role: 'Balık Restoranı',
       testimonial3Text: 'Artık hiçbir potansiyel hasta kaçmıyor. AI asistan günün her saati arayan müşterileri karşılıyor, sorularını yanıtlıyor ve randevu alıyor.',
       testimonial3Author: 'Smile and Holiday',
       testimonial3Role: 'Diş Kliniği',
+      testimonial4Text: 'Aylık yaklaşık 500 rezervasyon talebi alıyoruz. Volina AI hepsini kusursuz bir şekilde hallediyor ve müşterilerimiz anında hizmetten çok memnun.',
+      testimonial4Author: 'Latife Meyhane Bestekar',
+      testimonial4Role: 'Geleneksel Türk Meyhanesi',
       tryModel: 'Modeli Dene',
     },
     adminPanel: {

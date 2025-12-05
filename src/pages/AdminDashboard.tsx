@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '../components/ui/button';
-import { LogOut, Users, Moon, Sun, Globe, Info, X, LayoutDashboard, MessageSquare, Settings, BarChart3, Menu, TrendingUp, TrendingDown, Phone, Clock, DollarSign } from 'lucide-react';
+import { LogOut, Users, Moon, Sun, Globe, Info, X, LayoutDashboard, MessageSquare, Settings, BarChart3, Menu, TrendingUp, TrendingDown, Phone, Clock, DollarSign, FileText } from 'lucide-react';
 import { useDarkMode } from '../components/DarkModeContext';
 import { useLanguage } from '../components/LanguageContext';
 import volinaLogo from '../assets/volina-logo.svg';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AdminAbout } from '../components/AdminAbout';
+import { AdminContact } from '../components/AdminContact';
 
 interface DemoRequest {
   id: number;
@@ -389,6 +391,28 @@ export function AdminDashboard() {
             >
               <LayoutDashboard className="w-5 h-5" />
               <span>{language === 'tr' ? 'Gösterge Paneli' : 'Dashboard'}</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('about')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                activeTab === 'about'
+                  ? 'bg-blue-50 dark:bg-blue-900/30 text-[#3366FF]'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+              }`}
+            >
+              <FileText className="w-5 h-5" />
+              <span>{language === 'tr' ? 'Hakkında' : 'About'}</span>
+            </button>
+            <button
+              onClick={() => handleTabChange('contact')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                activeTab === 'contact'
+                  ? 'bg-blue-50 dark:bg-blue-900/30 text-[#3366FF]'
+                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+              }`}
+            >
+              <Phone className="w-5 h-5" />
+              <span>{language === 'tr' ? 'İletişim' : 'Contact'}</span>
             </button>
             <button
               onClick={() => handleTabChange('demo-requests')}
@@ -868,6 +892,20 @@ export function AdminDashboard() {
                   {language === 'tr' ? 'Ayarlarınızı burada yapabilirsiniz.' : 'You can make your settings here.'}
                 </p>
               </div>
+            </div>
+          )}
+
+          {activeTab === 'about' && (
+            <div>
+              {/* About Content */}
+              <AdminAbout />
+            </div>
+          )}
+
+          {activeTab === 'contact' && (
+            <div>
+              {/* Contact Content */}
+              <AdminContact />
             </div>
           )}
         </main>
