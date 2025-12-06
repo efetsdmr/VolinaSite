@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../components/ui/button';
-import { LogOut, Users, Moon, Sun, Globe, Info, X, LayoutDashboard, MessageSquare, Settings, BarChart3, Menu, TrendingUp, TrendingDown, Phone, Clock, DollarSign, FileText } from 'lucide-react';
+import { LogOut, Users, Moon, Sun, Globe, Info, X, LayoutDashboard, Settings, BarChart3, Menu, TrendingUp, TrendingDown, Phone, Clock, DollarSign, FileText, Search, Check, ChevronDown, Plus } from 'lucide-react';
 import { useDarkMode } from '../components/DarkModeContext';
 import { useLanguage } from '../components/LanguageContext';
 import volinaLogo from '../assets/volina-logo.svg';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { AdminAbout } from '../components/AdminAbout';
 import { AdminContact } from '../components/AdminContact';
+import { AssistantSidebar } from '../components/AssistantSidebar';
 
 interface DemoRequest {
   id: number;
@@ -30,6 +31,130 @@ export function AdminDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedAssistant, setSelectedAssistant] = useState('all');
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
+
+  // Settings state - Assistant management
+  const [selectedAssistantId, setSelectedAssistantId] = useState('assistant-a');
+  const [assistantSearchQuery, setAssistantSearchQuery] = useState('');
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [newAssistant, setNewAssistant] = useState({
+    name: '',
+    voice: 'tara',
+    behavior: '',
+    startTime: '09:00',
+    endTime: '18:00'
+  });
+  
+  // Mock assistants database
+  const [assistantsData, setAssistantsData] = useState({
+    'assistant-a': {
+      name: 'Assistant A',
+      tags: ['deepgram', 'openai', '11labs'],
+      voice: 'tara',
+      behavior: 'Müşterilere nazik ve profesyonel bir şekilde davranın. Sorulara net ve detaylı cevaplar verin. Müşteri memnuniyetini ön planda tutun.',
+      startTime: '09:00',
+      endTime: '18:00'
+    },
+    'assistant-b': {
+      name: 'Assistant B',
+      tags: ['deepgram', 'openai', 'deepgram'],
+      voice: 'jess',
+      behavior: 'Be energetic and friendly. Help customers with their inquiries in a professional manner.',
+      startTime: '08:00',
+      endTime: '17:00'
+    },
+    'assistant-c': {
+      name: 'Assistant C',
+      tags: ['deepgram', 'openai', 'vapi'],
+      voice: 'cole',
+      behavior: 'Restorana gelen rezervasyon taleplerini karşıla. Müsait saatleri söyle ve rezervasyon al.',
+      startTime: '10:00',
+      endTime: '22:00'
+    },
+    'assistant-d': {
+      name: 'Assistant D',
+      tags: ['deepgram', 'openai', 'vapi'],
+      voice: 'leo',
+      behavior: 'Handle dental clinic appointments. Be calm and reassuring with patients.',
+      startTime: '09:00',
+      endTime: '18:00'
+    }
+  });
+
+  const assistantsList = Object.keys(assistantsData).map(id => ({
+    id,
+    name: assistantsData[id as keyof typeof assistantsData].name,
+    tags: assistantsData[id as keyof typeof assistantsData].tags
+  }));
+  
+  const filteredAssistants = assistantsList.filter(assistant =>
+    assistant.name.toLowerCase().includes(assistantSearchQuery.toLowerCase()) ||
+    assistant.tags.some(tag => tag.toLowerCase().includes(assistantSearchQuery.toLowerCase()))
+  );
+
+  const currentAssistant = assistantsData[selectedAssistantId as keyof typeof assistantsData];
+
+  const [settingsSaveMessage, setSettingsSaveMessage] = useState('');
+  const [isVoiceDropdownOpen, setIsVoiceDropdownOpen] = useState(false);
+  const [voiceSearchQuery, setVoiceSearchQuery] = useState('');
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Voice options with details
+  const voiceOptions = [
+    {
+      id: 'tara',
+      name: 'Tara',
+      gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 50%, #c44569 100%)',
+      tags: ['Vapi model', 'Conversational', 'Clear'],
+      description: language === 'tr' ? 'Kadın Ses (Türkçe)' : 'Female Voice (Turkish)'
+    },
+    {
+      id: 'cole',
+      name: 'Cole',
+      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+      tags: ['22 year old white male', 'Deeper tone', 'Calming', 'Professional'],
+      description: language === 'tr' ? 'Erkek Ses (Türkçe)' : 'Male Voice (Turkish)'
+    },
+    {
+      id: 'jess',
+      name: 'Jess',
+      gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #feca57 100%)',
+      tags: ['Vapi model', 'Energetic', 'Youthful'],
+      description: language === 'tr' ? 'Kadın Ses (İngilizce)' : 'Female Voice (English)'
+    },
+    {
+      id: 'leo',
+      name: 'Leo',
+      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #43e97b 100%)',
+      tags: ['Vapi model', 'Authoritative', 'Deep'],
+      description: language === 'tr' ? 'Erkek Ses (İngilizce)' : 'Male Voice (English)'
+    },
+    {
+      id: 'mia',
+      name: 'Mia',
+      gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 50%, #30cfd0 100%)',
+      tags: ['Vapi model', 'Professional', 'Articulate'],
+      description: language === 'tr' ? 'Kadın Ses (Profesyonel)' : 'Female Voice (Professional)'
+    }
+  ];
+
+  const filteredVoices = voiceOptions.filter(voice =>
+    voice.name.toLowerCase().includes(voiceSearchQuery.toLowerCase()) ||
+    voice.tags.some(tag => tag.toLowerCase().includes(voiceSearchQuery.toLowerCase()))
+  );
+
+  const selectedVoice = voiceOptions.find(v => v.id === currentAssistant?.voice) || voiceOptions[0];
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsVoiceDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Mock data for dashboard metrics based on selected filters
   const getMetricsData = () => {
@@ -281,6 +406,69 @@ export function AdminDashboard() {
     setLanguage(language === 'en' ? 'tr' : 'en');
   };
 
+  const handleSettingsSave = () => {
+    // In a real app, this would save to an API
+    console.log('Saving assistant settings for:', selectedAssistantId, currentAssistant);
+    
+    // Show success message
+    setSettingsSaveMessage(t.adminDashboard.settingsSaved);
+    
+    // Hide message after 3 seconds
+    setTimeout(() => {
+      setSettingsSaveMessage('');
+    }, 3000);
+  };
+
+  const handleUpdateAssistant = (field: string, value: string) => {
+    setAssistantsData(prev => ({
+      ...prev,
+      [selectedAssistantId]: {
+        ...prev[selectedAssistantId as keyof typeof prev],
+        [field]: value
+      }
+    }));
+  };
+
+  const handleCreateAssistant = () => {
+    setShowCreateDialog(true);
+  };
+
+  const handleSaveNewAssistant = () => {
+    if (!newAssistant.name.trim()) {
+      alert(t.adminDashboard.assistantNamePlaceholder);
+      return;
+    }
+
+    // Create unique ID from name
+    const assistantId = newAssistant.name.toLowerCase().replace(/\s+/g, '-');
+    
+    // Add new assistant to database
+    setAssistantsData(prev => ({
+      ...prev,
+      [assistantId]: {
+        name: newAssistant.name,
+        tags: ['new'],
+        voice: newAssistant.voice,
+        behavior: newAssistant.behavior,
+        startTime: newAssistant.startTime,
+        endTime: newAssistant.endTime
+      }
+    }));
+
+    // Select the newly created assistant
+    setSelectedAssistantId(assistantId);
+
+    // Reset form and close dialog
+    setNewAssistant({
+      name: '',
+      voice: 'tara',
+      behavior: '',
+      startTime: '09:00',
+      endTime: '18:00'
+    });
+    setShowCreateDialog(false);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 dark:from-gray-900 dark:via-blue-950/30 dark:to-purple-950/30 transition-colors duration-300">
       {/* Header */}
@@ -431,17 +619,6 @@ export function AdminDashboard() {
               )}
             </button>
             <button
-              onClick={() => handleTabChange('messages')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                activeTab === 'messages'
-                  ? 'bg-blue-50 dark:bg-blue-900/30 text-[#3366FF]'
-                  : 'text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700'
-              }`}
-            >
-              <MessageSquare className="w-5 h-5" />
-              <span>{language === 'tr' ? 'Mesajlar' : 'Messages'}</span>
-            </button>
-            <button
               onClick={() => handleTabChange('analytics')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 activeTab === 'analytics'
@@ -467,7 +644,7 @@ export function AdminDashboard() {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 px-4 sm:px-6 lg:px-8 py-8">
+        <main className={`flex-1 ${activeTab === 'settings' ? 'h-[calc(100vh-72px)] p-2' : 'px-4 sm:px-6 lg:px-8 py-8'}`}>
           {activeTab === 'dashboard' && (
             <div>
               {/* Dashboard Header with Filters */}
@@ -853,20 +1030,6 @@ export function AdminDashboard() {
             </div>
           )}
 
-          {activeTab === 'messages' && (
-            <div>
-              {/* Messages Content */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 dark:border-gray-700">
-                <h2 className="text-2xl text-[#333333] dark:text-white mb-2">
-                  {language === 'tr' ? 'Mesajlar' : 'Messages'}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {language === 'tr' ? 'Mesajlarınız burada gösterilecektir.' : 'Your messages will be displayed here.'}
-                </p>
-              </div>
-            </div>
-          )}
-
           {activeTab === 'analytics' && (
             <div>
               {/* Analytics Content */}
@@ -882,15 +1045,275 @@ export function AdminDashboard() {
           )}
 
           {activeTab === 'settings' && (
-            <div>
-              {/* Settings Content */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 dark:border-gray-700">
-                <h2 className="text-2xl text-[#333333] dark:text-white">
-                  {language === 'tr' ? 'Ayarlar' : 'Settings'}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {language === 'tr' ? 'Ayarlarınızı burada yapabilirsiniz.' : 'You can make your settings here.'}
-                </p>
+            <div className="flex gap-0 h-full rounded-xl overflow-hidden">
+              {/* Left Sidebar - Assistant List (Desktop Only) */}
+              <div className="hidden lg:block">
+                <AssistantSidebar
+                  assistants={filteredAssistants}
+                  selectedId={selectedAssistantId}
+                  searchQuery={assistantSearchQuery}
+                  onSearchChange={setAssistantSearchQuery}
+                  onSelectAssistant={setSelectedAssistantId}
+                  onCreateNew={handleCreateAssistant}
+                />
+              </div>
+
+              {/* Right Content - Settings Form */}
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-gray-900">
+                {/* Mobile Assistant Selector */}
+                <div className="lg:hidden mb-6">
+                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                    {language === 'tr' ? 'Asistan Seç' : 'Select Assistant'}
+                  </label>
+                  <div className="flex gap-2">
+                    <select
+                      value={selectedAssistantId}
+                      onChange={(e) => setSelectedAssistantId(e.target.value)}
+                      className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                    >
+                      {filteredAssistants.map((assistant) => (
+                        <option key={assistant.id} value={assistant.id}>
+                          {assistant.name}
+                        </option>
+                      ))}
+                    </select>
+                    <Button
+                      onClick={handleCreateAssistant}
+                      className="shrink-0 bg-[#3366FF] hover:bg-[#3366FF]/90 text-white px-4 py-3 rounded-lg"
+                    >
+                      <Plus className="w-5 h-5" />
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Settings Header */}
+                <div className="mb-6">
+                  <h2 className="text-2xl text-[#333333] dark:text-white mb-2">
+                    {t.adminDashboard.settingsTitle}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {t.adminDashboard.settingsSubtitle}
+                  </p>
+                </div>
+
+                {/* Success Message */}
+                {settingsSaveMessage && (
+                  <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-800 rounded-xl text-green-700 dark:text-green-300">
+                    {settingsSaveMessage}
+                  </div>
+                )}
+
+                {/* Settings Form */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden">
+                <div className="p-6 space-y-6">
+                  {/* Assistant Name */}
+                  <div>
+                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      {t.adminDashboard.assistantName}
+                    </label>
+                    <input
+                      type="text"
+                      value={currentAssistant.name}
+                      onChange={(e) => handleUpdateAssistant('name', e.target.value)}
+                      placeholder={t.adminDashboard.assistantNamePlaceholder}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                    />
+                  </div>
+
+                  {/* Voice Settings */}
+                  <div>
+                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      {t.adminDashboard.voiceSettings}
+                    </label>
+                    
+                    {/* Voice Dropdown Button */}
+                    <div className="relative" ref={dropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setIsVoiceDropdownOpen(!isVoiceDropdownOpen)}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="w-10 h-10 rounded-full shrink-0"
+                            style={{ background: selectedVoice.gradient }}
+                          />
+                          <div className="text-left">
+                            <div className="text-sm">{selectedVoice.name}</div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              {selectedVoice.description}
+                            </div>
+                          </div>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-gray-500 transition-transform ${isVoiceDropdownOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {/* Dropdown Menu */}
+                      {isVoiceDropdownOpen && (
+                        <div className="absolute z-10 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-2xl overflow-hidden">
+                          {/* Search Input */}
+                          <div className="p-3 border-b border-gray-200 dark:border-gray-700">
+                            <div className="relative">
+                              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                              <input
+                                type="text"
+                                value={voiceSearchQuery}
+                                onChange={(e) => setVoiceSearchQuery(e.target.value)}
+                                placeholder={t.adminDashboard.voiceSearchPlaceholder}
+                                className="w-full pl-10 pr-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Voice Options List */}
+                          <div className="max-h-80 overflow-y-auto">
+                            {filteredVoices.map((voice) => (
+                              <div
+                                key={voice.id}
+                                onClick={() => {
+                                  handleUpdateAssistant('voice', voice.id);
+                                  setIsVoiceDropdownOpen(false);
+                                  setVoiceSearchQuery('');
+                                }}
+                                className={`p-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors border-b border-gray-100 dark:border-gray-700 last:border-b-0 ${
+                                  currentAssistant.voice === voice.id ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                                }`}
+                              >
+                                <div className="flex items-start justify-between">
+                                  <div className="flex items-start gap-3 flex-1">
+                                    <div
+                                      className="w-12 h-12 rounded-full shrink-0"
+                                      style={{ background: voice.gradient }}
+                                    />
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2 mb-1">
+                                        <span className="text-sm text-gray-900 dark:text-gray-100">
+                                          {voice.name}
+                                        </span>
+                                      </div>
+                                      <div className="flex flex-wrap gap-1.5 mb-2">
+                                        {voice.tags.map((tag, index) => (
+                                          <span
+                                            key={index}
+                                            className="px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-700 text-xs text-gray-700 dark:text-gray-300"
+                                          >
+                                            {tag}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {currentAssistant.voice === voice.id && (
+                                    <Check className="w-5 h-5 text-[#3366FF] shrink-0 ml-2" />
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                            {filteredVoices.length === 0 && (
+                              <div className="p-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+                                {language === 'tr' ? 'Sonuç bulunamadı' : 'No results found'}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Behavior Settings */}
+                  <div>
+                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      {t.adminDashboard.behaviorSettings}
+                    </label>
+                    <textarea
+                      value={currentAssistant.behavior}
+                      onChange={(e) => handleUpdateAssistant('behavior', e.target.value)}
+                      placeholder={t.adminDashboard.behaviorPlaceholder}
+                      rows={5}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF] resize-none"
+                    />
+                  </div>
+
+                  {/* Knowledge Base Upload */}
+                  <div>
+                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                      {t.adminDashboard.knowledgeBase || 'Bilgi Bankası'}
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-[#3366FF] dark:hover:border-[#3366FF] transition-colors">
+                      <input
+                        type="file"
+                        id="knowledge-upload"
+                        accept=".txt,.doc,.docx"
+                        multiple
+                        className="hidden"
+                        onChange={(e) => {
+                          const files = e.target.files;
+                          if (files) {
+                            console.log('Uploaded files:', Array.from(files).map(f => f.name));
+                            // Handle file upload logic here
+                          }
+                        }}
+                      />
+                      <label
+                        htmlFor="knowledge-upload"
+                        className="cursor-pointer flex flex-col items-center gap-2"
+                      >
+                        <svg className="w-12 h-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          <span className="text-[#3366FF] hover:underline">{t.adminDashboard.uploadFile || 'Dosya yükle'}</span>
+                          {' '}{t.adminDashboard.orDragDrop || 'veya sürükle bırak'}
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-500">
+                          TXT, DOC, DOCX
+                        </p>
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Working Hours */}
+                  <div>
+                    <label className="block text-sm text-gray-700 dark:text-gray-300 mb-3">
+                      {t.adminDashboard.workingHours}
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                          {t.adminDashboard.startTime}
+                        </label>
+                        <input
+                          type="time"
+                          value={currentAssistant.startTime}
+                          onChange={(e) => handleUpdateAssistant('startTime', e.target.value)}
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                          {t.adminDashboard.endTime}
+                        </label>
+                        <input
+                          type="time"
+                          value={currentAssistant.endTime}
+                          onChange={(e) => handleUpdateAssistant('endTime', e.target.value)}
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                  {/* Save Button */}
+                  <div className="p-6 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/30">
+                    <Button
+                      onClick={handleSettingsSave}
+                      className="w-full bg-gradient-to-r from-[#3366FF] to-[#8C51FF] hover:opacity-90 text-white py-3 rounded-xl"
+                    >
+                      {t.adminDashboard.saveSettings}
+                    </Button>
+                  </div>
+                </div>
               </div>
             </div>
           )}
@@ -1020,6 +1443,247 @@ export function AdminDashboard() {
                 className="w-full bg-[#3366FF] hover:bg-[#3366FF]/90 text-white py-3 rounded-xl"
               >
                 {t.adminDashboard.close}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Assistant Dialog */}
+      {showCreateDialog && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            {/* Dialog Header */}
+            <div className="sticky top-0 bg-white dark:bg-gray-800 p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between z-10">
+              <h3 className="text-xl text-gray-900 dark:text-white">
+                {t.adminDashboard.createAssistant}
+              </h3>
+              <Button
+                onClick={() => {
+                  setShowCreateDialog(false);
+                  setNewAssistant({
+                    name: '',
+                    voice: 'tara',
+                    behavior: '',
+                    startTime: '09:00',
+                    endTime: '18:00'
+                  });
+                }}
+                variant="ghost"
+                size="sm"
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              >
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Dialog Content */}
+            <div className="p-6 space-y-6">
+              {/* Assistant Name */}
+              <div>
+                <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  {t.adminDashboard.assistantName}
+                </label>
+                <input
+                  type="text"
+                  value={newAssistant.name}
+                  onChange={(e) => setNewAssistant(prev => ({ ...prev, name: e.target.value }))}
+                  placeholder={t.adminDashboard.assistantNamePlaceholder}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                />
+              </div>
+
+              {/* Voice Settings */}
+              <div>
+                <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  {t.adminDashboard.voiceSettings}
+                </label>
+                <div className="relative">
+                  <button
+                    onClick={() => setIsVoiceDropdownOpen(!isVoiceDropdownOpen)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-left flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="w-10 h-10 rounded-lg"
+                        style={{ background: voiceOptions.find(v => v.id === newAssistant.voice)?.gradient }}
+                      />
+                      <div>
+                        <div className="text-gray-900 dark:text-gray-100">
+                          {voiceOptions.find(v => v.id === newAssistant.voice)?.name}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                          {voiceOptions.find(v => v.id === newAssistant.voice)?.description}
+                        </div>
+                      </div>
+                    </div>
+                    <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isVoiceDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {isVoiceDropdownOpen && (
+                    <div ref={dropdownRef} className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600 shadow-xl z-50 max-h-80 overflow-y-auto">
+                      <div className="p-3 border-b border-gray-200 dark:border-gray-600">
+                        <div className="relative">
+                          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                          <input
+                            type="text"
+                            placeholder={t.adminDashboard.voiceSearchPlaceholder}
+                            value={voiceSearchQuery}
+                            onChange={(e) => setVoiceSearchQuery(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="p-2">
+                        {filteredVoices.map((voice) => (
+                          <button
+                            key={voice.id}
+                            onClick={() => {
+                              setNewAssistant(prev => ({ ...prev, voice: voice.id }));
+                              setIsVoiceDropdownOpen(false);
+                              setVoiceSearchQuery('');
+                            }}
+                            className="w-full p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors flex items-center gap-3 text-left"
+                          >
+                            <div
+                              className="w-12 h-12 rounded-lg shrink-0"
+                              style={{ background: voice.gradient }}
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className="text-gray-900 dark:text-gray-100">{voice.name}</span>
+                                {newAssistant.voice === voice.id && (
+                                  <Check className="w-4 h-4 text-[#3366FF]" />
+                                )}
+                              </div>
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+                                {voice.description}
+                              </div>
+                              <div className="flex flex-wrap gap-1">
+                                {voice.tags.map((tag, idx) => (
+                                  <span
+                                    key={idx}
+                                    className="inline-block px-2 py-0.5 rounded text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                                  >
+                                    {tag}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Behavior Settings */}
+              <div>
+                <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  {t.adminDashboard.behaviorSettings}
+                </label>
+                <textarea
+                  value={newAssistant.behavior}
+                  onChange={(e) => setNewAssistant(prev => ({ ...prev, behavior: e.target.value }))}
+                  placeholder={t.adminDashboard.behaviorPlaceholder}
+                  rows={5}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF] resize-none"
+                />
+              </div>
+
+              {/* Knowledge Base Upload */}
+              <div>
+                <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  {t.adminDashboard.knowledgeBase || 'Bilgi Bankası'}
+                </label>
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-[#3366FF] dark:hover:border-[#3366FF] transition-colors">
+                  <input
+                    type="file"
+                    id="knowledge-upload-new"
+                    accept=".txt,.doc,.docx"
+                    multiple
+                    className="hidden"
+                    onChange={(e) => {
+                      const files = e.target.files;
+                      if (files) {
+                        console.log('Uploaded files:', Array.from(files).map(f => f.name));
+                      }
+                    }}
+                  />
+                  <label
+                    htmlFor="knowledge-upload-new"
+                    className="cursor-pointer flex flex-col items-center gap-2"
+                  >
+                    <svg className="w-12 h-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                      <span className="text-[#3366FF] hover:underline">{t.adminDashboard.uploadFile || 'Dosya yükle'}</span>
+                      {' '}{t.adminDashboard.orDragDrop || 'veya sürükle bırak'}
+                    </div>
+                    <p className="text-xs text-gray-500 dark:text-gray-500">
+                      TXT, DOC, DOCX
+                    </p>
+                  </label>
+                </div>
+              </div>
+
+              {/* Working Hours */}
+              <div>
+                <label className="block text-sm text-gray-700 dark:text-gray-300 mb-3">
+                  {t.adminDashboard.workingHours}
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                      {t.adminDashboard.startTime}
+                    </label>
+                    <input
+                      type="time"
+                      value={newAssistant.startTime}
+                      onChange={(e) => setNewAssistant(prev => ({ ...prev, startTime: e.target.value }))}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-600 dark:text-gray-400 mb-1">
+                      {t.adminDashboard.endTime}
+                    </label>
+                    <input
+                      type="time"
+                      value={newAssistant.endTime}
+                      onChange={(e) => setNewAssistant(prev => ({ ...prev, endTime: e.target.value }))}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dialog Footer */}
+            <div className="sticky bottom-0 bg-white dark:bg-gray-800 p-6 border-t border-gray-200 dark:border-gray-700 flex gap-3 justify-end">
+              <Button
+                onClick={() => {
+                  setShowCreateDialog(false);
+                  setNewAssistant({
+                    name: '',
+                    voice: 'tara',
+                    behavior: '',
+                    startTime: '09:00',
+                    endTime: '18:00'
+                  });
+                }}
+                variant="outline"
+              >
+                {t.adminDashboard.close}
+              </Button>
+              <Button
+                onClick={handleSaveNewAssistant}
+                className="bg-gradient-to-r from-[#3366FF] to-[#8C51FF] text-white"
+              >
+                {t.adminDashboard.createAssistant}
               </Button>
             </div>
           </div>

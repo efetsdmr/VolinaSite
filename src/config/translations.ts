@@ -160,6 +160,30 @@ export interface Translations {
     requestDetails: string;
     close: string;
     loading: string;
+    // Settings translations
+    settingsTitle: string;
+    settingsSubtitle: string;
+    createAssistant: string;
+    searchAssistants: string;
+    assistantName: string;
+    assistantNamePlaceholder: string;
+    voiceSettings: string;
+    selectVoice: string;
+    voiceSearchPlaceholder: string;
+    voiceMaleTurkish: string;
+    voiceFemaleTurkish: string;
+    voiceMaleEnglish: string;
+    voiceFemaleEnglish: string;
+    behaviorSettings: string;
+    behaviorPlaceholder: string;
+    workingHours: string;
+    startTime: string;
+    endTime: string;
+    saveSettings: string;
+    settingsSaved: string;
+    knowledgeBase: string;
+    uploadFile: string;
+    orDragDrop: string;
   };
 
   // Pricing
@@ -435,6 +459,30 @@ export const translations: Record<Language, Translations> = {
       requestDetails: 'Request Details',
       close: 'Close',
       loading: 'Loading...',
+      // Settings translations
+      settingsTitle: 'Assistant Settings',
+      settingsSubtitle: 'Configure your AI assistant\'s voice, behavior, and working hours',
+      createAssistant: 'Create New Assistant',
+      searchAssistants: 'Search assistants...',
+      assistantName: 'Assistant Name',
+      assistantNamePlaceholder: 'E.g: Customer Service Assistant',
+      voiceSettings: 'Voice Settings',
+      selectVoice: 'Select Voice',
+      voiceSearchPlaceholder: 'Search voice...',
+      voiceMaleTurkish: 'Male Voice (Turkish)',
+      voiceFemaleTurkish: 'Female Voice (Turkish)',
+      voiceMaleEnglish: 'Male Voice (English)',
+      voiceFemaleEnglish: 'Female Voice (English)',
+      behaviorSettings: 'Behavior Settings',
+      behaviorPlaceholder: 'Write how you want your assistant to behave. E.g: "Be polite and professional with customers. Provide detailed answers to questions."',
+      workingHours: 'Working Hours',
+      startTime: 'Start Time',
+      endTime: 'End Time',
+      saveSettings: 'Save Settings',
+      settingsSaved: 'Settings saved successfully!',
+      knowledgeBase: 'Knowledge Base',
+      uploadFile: 'Upload file',
+      orDragDrop: 'or drag and drop',
     },
     pricing: {
       title: 'Simple, Transparent Pricing',
@@ -699,6 +747,30 @@ export const translations: Record<Language, Translations> = {
       requestDetails: 'Talep Detayları',
       close: 'Kapat',
       loading: 'Yükleniyor...',
+      // Settings translations
+      settingsTitle: 'Asistan Ayarları',
+      settingsSubtitle: 'AI asistanınızın ses, davranış ve çalışma saatlerini yapılandırın',
+      createAssistant: 'Yeni Asistan',
+      searchAssistants: 'Asistan ara...',
+      assistantName: 'Asistan Adı',
+      assistantNamePlaceholder: 'Örn: Müşteri Hizmetleri Asistanı',
+      voiceSettings: 'Ses Ayarları',
+      selectVoice: 'Ses Seçin',
+      voiceSearchPlaceholder: 'Ses ara...',
+      voiceMaleTurkish: 'Erkek Ses (Türkçe)',
+      voiceFemaleTurkish: 'Kadın Ses (Türkçe)',
+      voiceMaleEnglish: 'Erkek Ses (İngilizce)',
+      voiceFemaleEnglish: 'Kadın Ses (İngilizce)',
+      behaviorSettings: 'Davranış Ayarları',
+      behaviorPlaceholder: 'Asistanın nasıl davranmasını istediğinizi yazın. Örn: "Müşterilere nazik ve profesyonel bir şekilde davran. Sorulara detaylı cevaplar ver."',
+      workingHours: 'Çalışma Saatleri',
+      startTime: 'Başlangıç Saati',
+      endTime: 'Bitiş Saati',
+      saveSettings: 'Ayarları Kaydet',
+      settingsSaved: 'Ayarlar başarıyla kaydedildi!',
+      knowledgeBase: 'Bilgi Bankası',
+      uploadFile: 'Dosya yükle',
+      orDragDrop: 'veya sürükle bırak',
     },
     pricing: {
       title: 'Basit, Şeffaf Fiyatlandırma',
