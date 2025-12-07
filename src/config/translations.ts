@@ -184,6 +184,24 @@ export interface Translations {
     knowledgeBase: string;
     uploadFile: string;
     orDragDrop: string;
+    // Analytics translations
+    metrics: string;
+    groupedBy: string;
+    days: string;
+    weeks: string;
+    months: string;
+    allAssistants: string;
+    totalCallMinutes: string;
+    numberOfCalls: string;
+    totalSpent: string;
+    avgCostPerCall: string;
+    callAnalysis: string;
+    reasonCallEnded: string;
+    avgCallDurationByAssistant: string;
+    startDate: string;
+    endDate: string;
+    cancel: string;
+    apply: string;
   };
 
   // Pricing
@@ -483,6 +501,24 @@ export const translations: Record<Language, Translations> = {
       knowledgeBase: 'Knowledge Base',
       uploadFile: 'Upload file',
       orDragDrop: 'or drag and drop',
+      // Analytics translations
+      metrics: 'Metrics',
+      groupedBy: 'Grouped By',
+      days: 'Days',
+      weeks: 'Weeks',
+      months: 'Months',
+      allAssistants: 'All Assistants',
+      totalCallMinutes: 'Total Call Minutes',
+      numberOfCalls: 'Number of Calls',
+      totalSpent: 'Total Spent',
+      avgCostPerCall: 'Avg Cost Per Call',
+      callAnalysis: 'Call Analysis',
+      reasonCallEnded: 'Reason Call Ended',
+      avgCallDurationByAssistant: 'Avg Call Duration By Assistant',
+      startDate: 'Start Date',
+      endDate: 'End Date',
+      cancel: 'Cancel',
+      apply: 'Apply',
     },
     pricing: {
       title: 'Simple, Transparent Pricing',
@@ -771,6 +807,24 @@ export const translations: Record<Language, Translations> = {
       knowledgeBase: 'Bilgi Bankası',
       uploadFile: 'Dosya yükle',
       orDragDrop: 'veya sürükle bırak',
+      // Analytics translations
+      metrics: 'Metrikler',
+      groupedBy: 'Gruplanan',
+      days: 'Günler',
+      weeks: 'Haftalar',
+      months: 'Aylar',
+      allAssistants: 'Tüm Asistanlar',
+      totalCallMinutes: 'Toplam Çağrı Dakikası',
+      numberOfCalls: 'Çağrı Sayısı',
+      totalSpent: 'Toplam Harcama',
+      avgCostPerCall: 'Çağrı Başına Ortalama Maliyet',
+      callAnalysis: 'Çağrı Analizi',
+      reasonCallEnded: 'Çağrı Nedeniyle Sonlandırıldı',
+      avgCallDurationByAssistant: 'Asistan Başına Ortalama Çağrı Süresi',
+      startDate: 'Başlangıç Tarihi',
+      endDate: 'Bitiş Tarihi',
+      cancel: 'İptal',
+      apply: 'Uygula',
     },
     pricing: {
       title: 'Basit, Şeffaf Fiyatlandırma',

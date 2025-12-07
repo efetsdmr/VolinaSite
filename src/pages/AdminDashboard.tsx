@@ -1143,7 +1143,7 @@ export function AdminDashboard() {
             <div className="space-y-6">
               {/* Header with Controls */}
               <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <h2 className="text-2xl text-white">Metrics</h2>
+                <h2 className="text-2xl text-white">{t.adminDashboard.metrics}</h2>
                 <div className="flex flex-wrap items-center gap-3">
                   {/* Date Range Picker */}
                   <div className="relative" ref={datePickerRef}>
@@ -1160,7 +1160,7 @@ export function AdminDashboard() {
                       <div className="absolute top-full mt-2 right-0 bg-[#1a1a1a] border border-gray-700 rounded-lg p-4 shadow-xl z-50 min-w-[320px]">
                         <div className="space-y-4">
                           <div>
-                            <label className="block text-gray-400 text-xs mb-2">Start Date</label>
+                            <label className="block text-gray-400 text-xs mb-2">{t.adminDashboard.startDate}</label>
                             <input
                               type="date"
                               value={tempDateRange.start}
@@ -1169,7 +1169,7 @@ export function AdminDashboard() {
                             />
                           </div>
                           <div>
-                            <label className="block text-gray-400 text-xs mb-2">End Date</label>
+                            <label className="block text-gray-400 text-xs mb-2">{t.adminDashboard.endDate}</label>
                             <input
                               type="date"
                               value={tempDateRange.end}
@@ -1182,13 +1182,13 @@ export function AdminDashboard() {
                               onClick={() => setShowDatePicker(false)}
                               className="flex-1 px-3 py-2 rounded-lg bg-[#0a0a0a] border border-gray-700 text-white text-sm hover:bg-[#1a1a1a] transition-colors"
                             >
-                              Cancel
+                              {t.adminDashboard.cancel}
                             </button>
                             <button
                               onClick={handleApplyDateRange}
                               className="flex-1 px-3 py-2 rounded-lg bg-[#3366FF] text-white text-sm hover:bg-[#2555DD] transition-colors"
                             >
-                              Apply
+                              {t.adminDashboard.apply}
                             </button>
                           </div>
                         </div>
@@ -1198,15 +1198,15 @@ export function AdminDashboard() {
                   
                   {/* Grouped By */}
                   <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <span>grouped by</span>
+                    <span>{t.adminDashboard.groupedBy}</span>
                     <select 
                       value={analyticsGroupedBy}
                       onChange={(e) => setAnalyticsGroupedBy(e.target.value as 'Days' | 'Weeks' | 'Months')}
                       className="px-3 py-2 rounded-lg bg-[#1a1a1a] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
                     >
-                      <option>Days</option>
-                      <option>Weeks</option>
-                      <option>Months</option>
+                      <option>{t.adminDashboard.days}</option>
+                      <option>{t.adminDashboard.weeks}</option>
+                      <option>{t.adminDashboard.months}</option>
                     </select>
                   </div>
 
@@ -1216,7 +1216,7 @@ export function AdminDashboard() {
                     onChange={(e) => setAnalyticsSelectedAssistant(e.target.value)}
                     className="px-4 py-2 rounded-lg bg-[#1a1a1a] border border-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
                   >
-                    <option>All Assistants</option>
+                    <option>{t.adminDashboard.allAssistants}</option>
                     <option>Assistant A</option>
                     <option>Assistant B</option>
                     <option>Assistant C</option>
@@ -1229,7 +1229,7 @@ export function AdminDashboard() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Total Call Minutes */}
                 <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
-                  <div className="text-gray-400 text-sm mb-2">Total Call Minutes</div>
+                  <div className="text-gray-400 text-sm mb-2">{t.adminDashboard.totalCallMinutes}</div>
                   <div className="text-white text-3xl mb-4">{analyticsMockData.metrics.totalCallMinutes}</div>
                   <ResponsiveContainer width="100%" height={60}>
                     <AreaChart data={analyticsMockData.miniCharts.callMinutes}>
@@ -1246,7 +1246,7 @@ export function AdminDashboard() {
 
                 {/* Number of Calls */}
                 <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
-                  <div className="text-gray-400 text-sm mb-2">Number of Calls</div>
+                  <div className="text-gray-400 text-sm mb-2">{t.adminDashboard.numberOfCalls}</div>
                   <div className="text-white text-3xl mb-4">{analyticsMockData.metrics.numberOfCalls}</div>
                   <ResponsiveContainer width="100%" height={60}>
                     <AreaChart data={analyticsMockData.miniCharts.numberOfCalls}>
@@ -1263,7 +1263,7 @@ export function AdminDashboard() {
 
                 {/* Total Spent */}
                 <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
-                  <div className="text-gray-400 text-sm mb-2">Total Spent</div>
+                  <div className="text-gray-400 text-sm mb-2">{t.adminDashboard.totalSpent}</div>
                   <div className="text-white text-3xl mb-4">${analyticsMockData.metrics.totalSpent}</div>
                   <ResponsiveContainer width="100%" height={60}>
                     <AreaChart data={analyticsMockData.miniCharts.totalSpent}>
@@ -1280,7 +1280,7 @@ export function AdminDashboard() {
 
                 {/* Average Cost per Call */}
                 <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
-                  <div className="text-gray-400 text-sm mb-2">Average Cost per Call</div>
+                  <div className="text-gray-400 text-sm mb-2">{t.adminDashboard.avgCostPerCall}</div>
                   <div className="text-white text-3xl mb-4">${analyticsMockData.metrics.avgCost}</div>
                   <ResponsiveContainer width="100%" height={60}>
                     <AreaChart data={analyticsMockData.miniCharts.avgCost}>
@@ -1298,57 +1298,105 @@ export function AdminDashboard() {
 
               {/* Call Analysis Section */}
               <div>
-                <h2 className="text-2xl text-white mb-6">Call Analysis</h2>
+                <h2 className="text-2xl text-white mb-6">{t.adminDashboard.callAnalysis}</h2>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* Reason Call Ended - Stacked Bar Chart */}
-                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
-                    <h3 className="text-white text-lg mb-4">Reason Call Ended</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <BarChart data={analyticsMockData.callEndReasons}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                        <XAxis dataKey="name" stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} />
-                        <YAxis stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
-                          labelStyle={{ color: '#fff' }}
-                        />
-                        <Legend 
-                          wrapperStyle={{ paddingTop: '20px' }}
-                          iconType="circle"
-                          formatter={(value) => {
-                            const labels: { [key: string]: string } = {
-                              'assistant-ended': 'assistant-ended-call',
-                              'customer-ended': 'customer-ended-call',
-                              'error-resources': 'call.start.error-get-resources-validatio...',
-                              'error-assistant': 'call.in-progress.error-assistant-did-not...'
-                            };
-                            return <span style={{ color: '#9ca3af', fontSize: '12px' }}>{labels[value] || value}</span>;
-                          }}
-                        />
-                        <Bar dataKey="assistant-ended" stackId="a" fill="#3366FF" radius={[0, 0, 0, 0]} />
-                        <Bar dataKey="customer-ended" stackId="a" fill="#8C51FF" radius={[0, 0, 0, 0]} />
-                        <Bar dataKey="error-resources" stackId="a" fill="#7c3aed" radius={[0, 0, 0, 0]} />
-                        <Bar dataKey="error-assistant" stackId="a" fill="#c084fc" radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
+                  <div className="bg-[#1a1a1a] rounded-xl p-4 sm:p-6 border border-gray-800">
+                    <h3 className="text-white text-base sm:text-lg mb-6">{t.adminDashboard.reasonCallEnded}</h3>
+                    <div className="flex flex-wrap gap-3 mb-4 lg:hidden">
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#3366FF]"></div>
+                        <span className="text-gray-400 text-xs">Asistan</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#8C51FF]"></div>
+                        <span className="text-gray-400 text-xs">Müşteri</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#7c3aed]"></div>
+                        <span className="text-gray-400 text-xs">Hata 1</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#c084fc]"></div>
+                        <span className="text-gray-400 text-xs">Hata 2</span>
+                      </div>
+                    </div>
+                    <div className="h-[450px] lg:h-[500px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={analyticsMockData.callEndReasons} margin={{ top: 10, right: 10, left: -10, bottom: 30 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+                          <XAxis 
+                            dataKey="name" 
+                            stroke="#9ca3af" 
+                            tick={{ fill: '#9ca3af', fontSize: 9 }}
+                            angle={-45}
+                            textAnchor="end"
+                            height={80}
+                            interval={0}
+                          />
+                          <YAxis 
+                            stroke="#9ca3af" 
+                            tick={{ fill: '#9ca3af', fontSize: 9 }}
+                            width={30}
+                          />
+                          <Tooltip 
+                            contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', fontSize: '12px' }}
+                            labelStyle={{ color: '#fff' }}
+                          />
+                          <Legend 
+                            wrapperStyle={{ paddingTop: '10px' }}
+                            className="hidden lg:block"
+                            iconType="circle"
+                            iconSize={8}
+                            formatter={(value) => {
+                              const labels: { [key: string]: string } = {
+                                'assistant-ended': 'Asistan Sonlandırdı',
+                                'customer-ended': 'Müşteri Sonlandırdı',
+                                'error-resources': 'Hata: Kaynaklar',
+                                'error-assistant': 'Hata: Asistan'
+                              };
+                              return <span style={{ color: '#9ca3af', fontSize: '10px' }}>{labels[value] || value}</span>;
+                            }}
+                          />
+                          <Bar dataKey="assistant-ended" stackId="a" fill="#3366FF" radius={[0, 0, 0, 0]} />
+                          <Bar dataKey="customer-ended" stackId="a" fill="#8C51FF" radius={[0, 0, 0, 0]} />
+                          <Bar dataKey="error-resources" stackId="a" fill="#7c3aed" radius={[0, 0, 0, 0]} />
+                          <Bar dataKey="error-assistant" stackId="a" fill="#c084fc" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
                   </div>
 
                   {/* Average Call Duration by Assistant */}
-                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
-                    <h3 className="text-white text-lg mb-4">Average Call Duration by Assistant</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                      <BarChart data={analyticsMockData.callDuration}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                        <XAxis dataKey="assistant" stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} />
-                        <YAxis stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} />
-                        <Tooltip 
-                          contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
-                          labelStyle={{ color: '#fff' }}
-                        />
-                        <Bar dataKey="duration1" fill="#3366FF" radius={[4, 4, 0, 0]} />
-                        <Bar dataKey="duration2" fill="#8C51FF" radius={[4, 4, 0, 0]} />
-                      </BarChart>
-                    </ResponsiveContainer>
+                  <div className="bg-[#1a1a1a] rounded-xl p-4 sm:p-6 border border-gray-800">
+                    <h3 className="text-white text-base sm:text-lg mb-6">{t.adminDashboard.avgCallDurationByAssistant}</h3>
+                    <div className="h-[450px] lg:h-[500px]">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={analyticsMockData.callDuration} margin={{ top: 10, right: 10, left: -10, bottom: 30 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+                          <XAxis 
+                            dataKey="assistant" 
+                            stroke="#9ca3af" 
+                            tick={{ fill: '#9ca3af', fontSize: 9 }}
+                            angle={-45}
+                            textAnchor="end"
+                            height={80}
+                            interval={0}
+                          />
+                          <YAxis 
+                            stroke="#9ca3af" 
+                            tick={{ fill: '#9ca3af', fontSize: 9 }}
+                            width={30}
+                          />
+                          <Tooltip 
+                            contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', fontSize: '12px' }}
+                            labelStyle={{ color: '#fff' }}
+                          />
+                          <Bar dataKey="duration1" fill="#3366FF" radius={[4, 4, 0, 0]} />
+                          <Bar dataKey="duration2" fill="#8C51FF" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
                   </div>
                 </div>
               </div>
