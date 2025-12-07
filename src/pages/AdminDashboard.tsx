@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../components/ui/button';
-import { LogOut, Users, Moon, Sun, Globe, Info, X, LayoutDashboard, Settings, BarChart3, Menu, TrendingUp, TrendingDown, Phone, Clock, DollarSign, FileText, Search, Check, ChevronDown, Plus } from 'lucide-react';
+import { LogOut, Users, Moon, Sun, Globe, Info, X, LayoutDashboard, Settings, BarChart3, Menu, TrendingUp, TrendingDown, Phone, Clock, DollarSign, FileText, Search, Check, ChevronDown, Plus, Calendar } from 'lucide-react';
 import { useDarkMode } from '../components/DarkModeContext';
 import { useLanguage } from '../components/LanguageContext';
 import volinaLogo from '../assets/volina-logo.svg';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { AdminAbout } from '../components/AdminAbout';
 import { AdminContact } from '../components/AdminContact';
 import { AssistantSidebar } from '../components/AssistantSidebar';
@@ -31,6 +31,20 @@ export function AdminDashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [selectedAssistant, setSelectedAssistant] = useState('all');
   const [selectedPeriod, setSelectedPeriod] = useState('1month');
+
+  // Analytics filters state
+  const [analyticsDateRange, setAnalyticsDateRange] = useState({
+    start: '2025-07-11',
+    end: '2025-07-12'
+  });
+  const [analyticsGroupedBy, setAnalyticsGroupedBy] = useState<'Days' | 'Weeks' | 'Months'>('Days');
+  const [analyticsSelectedAssistant, setAnalyticsSelectedAssistant] = useState('All Assistants');
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [tempDateRange, setTempDateRange] = useState({
+    start: '2025-07-11',
+    end: '2025-07-12'
+  });
+  const datePickerRef = useRef<HTMLDivElement>(null);
 
   // Settings state - Assistant management
   const [selectedAssistantId, setSelectedAssistantId] = useState('assistant-a');
@@ -149,6 +163,9 @@ export function AdminDashboard() {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsVoiceDropdownOpen(false);
+      }
+      if (datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
+        setShowDatePicker(false);
       }
     };
 
@@ -298,6 +315,98 @@ export function AdminDashboard() {
   };
 
   const chartData = getChartData();
+
+  // Generate analytics mock data based on filters
+  const generateAnalyticsMockData = () => {
+    const assistantMultipliers: { [key: string]: number } = {
+      'All Assistants': 1,
+      'Assistant A': 0.8,
+      'Assistant B': 1.2,
+      'Assistant C': 0.9,
+      'Assistant D': 1.1
+    };
+    
+    const multiplier = assistantMultipliers[analyticsSelectedAssistant] || 1;
+    
+    // Calculate number of data points based on grouped by
+    const getDataPoints = () => {
+      if (analyticsGroupedBy === 'Days') return 12;
+      if (analyticsGroupedBy === 'Weeks') return 8;
+      return 6; // Months
+    };
+    
+    const dataPoints = getDataPoints();
+    
+    // Generate mini chart data for metric cards
+    const generateMiniChartData = (baseValues: number[]) => {
+      return baseValues.slice(0, dataPoints).map(v => ({ value: Math.round(v * multiplier) }));
+    };
+    
+    // Metric values
+    const metrics = {
+      totalCallMinutes: Math.round(113.24 * multiplier),
+      numberOfCalls: Math.round(145 * multiplier),
+      totalSpent: (10.03 * multiplier).toFixed(2),
+      avgCost: (0.07 * multiplier).toFixed(2)
+    };
+    
+    // Mini charts data
+    const miniCharts = {
+      callMinutes: generateMiniChartData([20, 25, 22, 30, 28, 35, 45, 38, 42, 50, 48, 40]),
+      numberOfCalls: generateMiniChartData([15, 18, 20, 22, 25, 30, 28, 35, 45, 38, 32, 28]),
+      totalSpent: generateMiniChartData([10, 15, 12, 18, 25, 30, 28, 22, 32, 35, 30, 25]),
+      avgCost: generateMiniChartData([8, 10, 12, 15, 18, 20, 25, 30, 35, 32, 28, 25])
+    };
+    
+    // Generate Call Analysis data
+    const generateCallEndReasons = () => {
+      const labels = analyticsGroupedBy === 'Days' 
+        ? ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+        : analyticsGroupedBy === 'Weeks'
+        ? ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8']
+        : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+        
+      return labels.slice(0, dataPoints).map(label => ({
+        name: label,
+        'assistant-ended': Math.round((10 + Math.random() * 15) * multiplier),
+        'customer-ended': Math.round((8 + Math.random() * 12) * multiplier),
+        'error-resources': Math.round((2 + Math.random() * 5) * multiplier),
+        'error-assistant': Math.round((1 + Math.random() * 3) * multiplier)
+      }));
+    };
+    
+    const generateCallDuration = () => {
+      const assistants = ['Asst 1', 'Asst 2', 'Asst 3', 'Asst 4', 'Asst 5', 'Asst 6', 
+                         'Asst 7', 'Asst 8', 'Asst 9', 'Asst 10', 'Asst 11', 'Asst 12'];
+      
+      return assistants.map((asst, idx) => ({
+        assistant: asst,
+        duration1: parseFloat((1.2 + Math.random() * 1.2 * multiplier).toFixed(1)),
+        duration2: idx === 11 ? parseFloat((1.5 * multiplier).toFixed(1)) : 0
+      }));
+    };
+    
+    return {
+      metrics,
+      miniCharts,
+      callEndReasons: generateCallEndReasons(),
+      callDuration: generateCallDuration()
+    };
+  };
+  
+  const analyticsMockData = generateAnalyticsMockData();
+
+  // Format date for display
+  const formatDateForDisplay = (dateStr: string) => {
+    const [year, month, day] = dateStr.split('-');
+    return `${month}/${day}/${year}`;
+  };
+
+  // Apply date range
+  const handleApplyDateRange = () => {
+    setAnalyticsDateRange(tempDateRange);
+    setShowDatePicker(false);
+  };
 
   // Fetch demo requests from API
   useEffect(() => {
@@ -1031,15 +1140,217 @@ export function AdminDashboard() {
           )}
 
           {activeTab === 'analytics' && (
-            <div>
-              {/* Analytics Content */}
-              <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-100 dark:border-gray-700">
-                <h2 className="text-2xl text-[#333333] dark:text-white">
-                  {language === 'tr' ? 'Analitik Veriler' : 'Analytics Data'}
-                </h2>
-                <p className="text-gray-600 dark:text-gray-400">
-                  {language === 'tr' ? 'Analitik veriler burada gösterilecektir.' : 'Analytics data will be displayed here.'}
-                </p>
+            <div className="space-y-6">
+              {/* Header with Controls */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <h2 className="text-2xl text-white">Metrics</h2>
+                <div className="flex flex-wrap items-center gap-3">
+                  {/* Date Range Picker */}
+                  <div className="relative" ref={datePickerRef}>
+                    <button
+                      onClick={() => setShowDatePicker(!showDatePicker)}
+                      className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1a1a1a] border border-gray-700 text-white text-sm hover:border-gray-600 transition-colors"
+                    >
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDateForDisplay(analyticsDateRange.start)} - {formatDateForDisplay(analyticsDateRange.end)}</span>
+                    </button>
+
+                    {/* Date Picker Dropdown */}
+                    {showDatePicker && (
+                      <div className="absolute top-full mt-2 right-0 bg-[#1a1a1a] border border-gray-700 rounded-lg p-4 shadow-xl z-50 min-w-[320px]">
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-gray-400 text-xs mb-2">Start Date</label>
+                            <input
+                              type="date"
+                              value={tempDateRange.start}
+                              onChange={(e) => setTempDateRange({ ...tempDateRange, start: e.target.value })}
+                              className="w-full px-3 py-2 rounded-lg bg-[#0a0a0a] border border-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-gray-400 text-xs mb-2">End Date</label>
+                            <input
+                              type="date"
+                              value={tempDateRange.end}
+                              onChange={(e) => setTempDateRange({ ...tempDateRange, end: e.target.value })}
+                              className="w-full px-3 py-2 rounded-lg bg-[#0a0a0a] border border-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => setShowDatePicker(false)}
+                              className="flex-1 px-3 py-2 rounded-lg bg-[#0a0a0a] border border-gray-700 text-white text-sm hover:bg-[#1a1a1a] transition-colors"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={handleApplyDateRange}
+                              className="flex-1 px-3 py-2 rounded-lg bg-[#3366FF] text-white text-sm hover:bg-[#2555DD] transition-colors"
+                            >
+                              Apply
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Grouped By */}
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <span>grouped by</span>
+                    <select 
+                      value={analyticsGroupedBy}
+                      onChange={(e) => setAnalyticsGroupedBy(e.target.value as 'Days' | 'Weeks' | 'Months')}
+                      className="px-3 py-2 rounded-lg bg-[#1a1a1a] border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                    >
+                      <option>Days</option>
+                      <option>Weeks</option>
+                      <option>Months</option>
+                    </select>
+                  </div>
+
+                  {/* All Assistants Dropdown */}
+                  <select 
+                    value={analyticsSelectedAssistant}
+                    onChange={(e) => setAnalyticsSelectedAssistant(e.target.value)}
+                    className="px-4 py-2 rounded-lg bg-[#1a1a1a] border border-gray-700 text-white text-sm focus:outline-none focus:ring-2 focus:ring-[#3366FF]"
+                  >
+                    <option>All Assistants</option>
+                    <option>Assistant A</option>
+                    <option>Assistant B</option>
+                    <option>Assistant C</option>
+                    <option>Assistant D</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Metric Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {/* Total Call Minutes */}
+                <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
+                  <div className="text-gray-400 text-sm mb-2">Total Call Minutes</div>
+                  <div className="text-white text-3xl mb-4">{analyticsMockData.metrics.totalCallMinutes}</div>
+                  <ResponsiveContainer width="100%" height={60}>
+                    <AreaChart data={analyticsMockData.miniCharts.callMinutes}>
+                      <defs>
+                        <linearGradient id="colorProjectBlue" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#3366FF" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#3366FF" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <Area type="monotone" dataKey="value" stroke="#3366FF" fill="url(#colorProjectBlue)" strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Number of Calls */}
+                <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
+                  <div className="text-gray-400 text-sm mb-2">Number of Calls</div>
+                  <div className="text-white text-3xl mb-4">{analyticsMockData.metrics.numberOfCalls}</div>
+                  <ResponsiveContainer width="100%" height={60}>
+                    <AreaChart data={analyticsMockData.miniCharts.numberOfCalls}>
+                      <defs>
+                        <linearGradient id="colorProjectPurple" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#8C51FF" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#8C51FF" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <Area type="monotone" dataKey="value" stroke="#8C51FF" fill="url(#colorProjectPurple)" strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Total Spent */}
+                <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
+                  <div className="text-gray-400 text-sm mb-2">Total Spent</div>
+                  <div className="text-white text-3xl mb-4">${analyticsMockData.metrics.totalSpent}</div>
+                  <ResponsiveContainer width="100%" height={60}>
+                    <AreaChart data={analyticsMockData.miniCharts.totalSpent}>
+                      <defs>
+                        <linearGradient id="colorLightPurple" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#a78bfa" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#a78bfa" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <Area type="monotone" dataKey="value" stroke="#a78bfa" fill="url(#colorLightPurple)" strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Average Cost per Call */}
+                <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
+                  <div className="text-gray-400 text-sm mb-2">Average Cost per Call</div>
+                  <div className="text-white text-3xl mb-4">${analyticsMockData.metrics.avgCost}</div>
+                  <ResponsiveContainer width="100%" height={60}>
+                    <AreaChart data={analyticsMockData.miniCharts.avgCost}>
+                      <defs>
+                        <linearGradient id="colorDarkBlue" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#2563eb" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <Area type="monotone" dataKey="value" stroke="#2563eb" fill="url(#colorDarkBlue)" strokeWidth={2} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* Call Analysis Section */}
+              <div>
+                <h2 className="text-2xl text-white mb-6">Call Analysis</h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Reason Call Ended - Stacked Bar Chart */}
+                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
+                    <h3 className="text-white text-lg mb-4">Reason Call Ended</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={analyticsMockData.callEndReasons}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                        <XAxis dataKey="name" stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} />
+                        <YAxis stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} />
+                        <Tooltip 
+                          contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
+                          labelStyle={{ color: '#fff' }}
+                        />
+                        <Legend 
+                          wrapperStyle={{ paddingTop: '20px' }}
+                          iconType="circle"
+                          formatter={(value) => {
+                            const labels: { [key: string]: string } = {
+                              'assistant-ended': 'assistant-ended-call',
+                              'customer-ended': 'customer-ended-call',
+                              'error-resources': 'call.start.error-get-resources-validatio...',
+                              'error-assistant': 'call.in-progress.error-assistant-did-not...'
+                            };
+                            return <span style={{ color: '#9ca3af', fontSize: '12px' }}>{labels[value] || value}</span>;
+                          }}
+                        />
+                        <Bar dataKey="assistant-ended" stackId="a" fill="#3366FF" radius={[0, 0, 0, 0]} />
+                        <Bar dataKey="customer-ended" stackId="a" fill="#8C51FF" radius={[0, 0, 0, 0]} />
+                        <Bar dataKey="error-resources" stackId="a" fill="#7c3aed" radius={[0, 0, 0, 0]} />
+                        <Bar dataKey="error-assistant" stackId="a" fill="#c084fc" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+
+                  {/* Average Call Duration by Assistant */}
+                  <div className="bg-[#1a1a1a] rounded-xl p-6 border border-gray-800">
+                    <h3 className="text-white text-lg mb-4">Average Call Duration by Assistant</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                      <BarChart data={analyticsMockData.callDuration}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                        <XAxis dataKey="assistant" stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} />
+                        <YAxis stroke="#9ca3af" tick={{ fill: '#9ca3af', fontSize: 12 }} />
+                        <Tooltip 
+                          contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
+                          labelStyle={{ color: '#fff' }}
+                        />
+                        <Bar dataKey="duration1" fill="#3366FF" radius={[4, 4, 0, 0]} />
+                        <Bar dataKey="duration2" fill="#8C51FF" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
               </div>
             </div>
           )}
